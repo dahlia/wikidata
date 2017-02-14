@@ -1,6 +1,14 @@
 Wikidata_ client library for Python
 ===================================
 
+.. image:: https://badge.fury.io/py/Wikidata.svg
+   :target: https://pypi.python.org/pypi/Wikidata
+   :alt: Latest PyPI version
+
+.. image:: https://travis-ci.org/dahlia/wikidata.svg
+   :alt: Build Status
+   :target: https://travis-ci.org/dahlia/wikidata
+
 This package provides easy APIs to use Wikidata_ for Python.
 
 >>> entity = client.get('Q494290')
