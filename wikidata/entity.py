@@ -117,6 +117,11 @@ class Entity:
         .. versionadded:: 0.2.0
 
         """
+        if self.data is None:
+            guessed_type = self.client.guess_entity_type(self.id)
+            if guessed_type is not None:
+                return guessed_type
+            # If guessing was failed follow the straightforward way.
         return EntityType(self.attributes['type'])
 
     @property

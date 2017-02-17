@@ -1,9 +1,11 @@
 import json
+import urllib.request
 
 from babel.core import Locale  # type: ignore
 
 from .mock import FIXTURES_PATH
-from wikidata.entity import Entity, EntityType
+from wikidata.client import Client
+from wikidata.entity import Entity, EntityId, EntityType
 from wikidata.multilingual import MultilingualText
 
 
@@ -31,9 +33,25 @@ def test_entity_description(fx_loaded_entity: Entity,
         '영국의 락 밴드'
 
 
-def test_entity_type(fx_item: Entity, fx_property: Entity):
+def test_entity_type(fx_item: Entity,
+                     fx_property: Entity,
+                     fx_client_opener: urllib.request.OpenerDirector):
     assert fx_item.type == EntityType.item
     assert fx_property.type == EntityType.property
+    guess_client = Client(opener=fx_client_opener, entity_type_guess=True)
+    item = guess_client.get(EntityId('Q494290'))
+    prop = guess_client.get(EntityId('P434'))
+    assert item.type == EntityType.item
+    assert item.data is None  # entity data shouldn't be loaded
+    assert prop.type == EntityType.property
+    assert prop.data is None  # entity data shouldn't be loaded
+    noguess_client = Client(opener=fx_client_opener, entity_type_guess=False)
+    item = noguess_client.get(EntityId('Q494290'))
+    prop = noguess_client.get(EntityId('P434'))
+    assert item.type == EntityType.item
+    assert item.data['type'] == 'item'
+    assert prop.type == EntityType.property
+    assert prop.data['type'] == 'property'
 
 
 def test_entity_attributes(fx_unloaded_entity: Entity,

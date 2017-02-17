@@ -1,3 +1,5 @@
+import urllib.request
+
 from pytest import fixture
 
 from .mock import FixtureOpener
@@ -6,8 +8,13 @@ from wikidata.entity import Entity, EntityId
 
 
 @fixture
-def fx_client() -> Client:
-    return Client(opener=FixtureOpener(WIKIDATA_BASE_URL))
+def fx_client_opener() -> urllib.request.OpenerDirector:
+    return FixtureOpener(WIKIDATA_BASE_URL)
+
+
+@fixture
+def fx_client(fx_client_opener: urllib.request.OpenerDirector) -> Client:
+    return Client(opener=fx_client_opener)
 
 
 @fixture(autouse=True)

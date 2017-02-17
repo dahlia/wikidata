@@ -1,5 +1,7 @@
+import urllib.request
+
 from wikidata.client import Client
-from wikidata.entity import Entity, EntityId
+from wikidata.entity import Entity, EntityId, EntityType
 
 
 def test_client_get(fx_client: Client):
@@ -7,6 +9,20 @@ def test_client_get(fx_client: Client):
     assert isinstance(entity, Entity)
     assert entity.data is None
     assert entity.id == EntityId('Q1299')
+
+
+def test_client_guess_entity_type(
+    fx_client_opener: urllib.request.OpenerDirector
+):
+    guess_client = Client(opener=fx_client_opener, entity_type_guess=True)
+    assert guess_client.guess_entity_type(EntityId('Q1299')) is EntityType.item
+    assert (guess_client.guess_entity_type(EntityId('P434')) is
+            EntityType.property)
+    assert guess_client.guess_entity_type(EntityId('NotApplicable')) is None
+    noguess_client = Client(opener=fx_client_opener, entity_type_guess=False)
+    assert noguess_client.guess_entity_type(EntityId('Q1299')) is None
+    assert noguess_client.guess_entity_type(EntityId('P434')) is None
+    assert noguess_client.guess_entity_type(EntityId('NotApplicable')) is None
 
 
 def test_client_request(fx_client: Client):
