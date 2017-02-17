@@ -2,6 +2,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+import enum
 from typing import TYPE_CHECKING, Mapping, NewType, Optional, Union
 
 from babel.core import Locale, UnknownLocaleError
@@ -11,7 +12,7 @@ from .multilingual import MultilingualText
 if TYPE_CHECKING:
     from .client import Client  # noqa: F401
 
-__all__ = 'Entity', 'EntityId'
+__all__ = 'Entity', 'EntityId', 'EntityType'
 
 
 #: The identifier of each :class:`Entity`.
@@ -48,6 +49,52 @@ class multilingual_attribute:
         return value
 
 
+class EntityType(enum.Enum):
+    """The enumerated type which consists of two possible values:
+
+    - :attr:`~EntityType.item`
+    - :attr:`~EntityType.property`
+
+    .. versionadded:: 0.2.0
+
+    """
+
+    #: (:class:`EntityType`) Items are :class:`Entity` objects that are
+    #: typically represented by Wikipage (at least in some Wikipedia
+    #: languages).  They can be viewed as "the thing that a Wikipage is about,"
+    #: which could be an individual thing (the person `Albert Einstein`_),
+    #: a general class of things (the class of all Physicists_),
+    #: and any other concept that is the subject of some Wikipedia page
+    #: (including things like `History of Berlin`_).
+    #:
+    #: .. seealso::
+    #:
+    #:    Items_ --- Wikibase Data Model
+    #:       The data model of Wikibase describes the structure of
+    #:       the data that is handled in Wikibase.
+    #:
+    #: .. _Albert Einstein: https://en.wikipedia.org/wiki/Albert_Einstein
+    #: .. _Physicists: https://en.wikipedia.org/wiki/Physicist
+    #: .. _History of Berlin: https://en.wikipedia.org/wiki/History_of_Berlin
+    #: .. _Items: https://www.mediawiki.org/wiki/Wikibase/DataModel#Items
+    item = 'item'
+
+    #: (:class:`EntityType`) Properties are :class:`Entity` objects that
+    #: describe a relationship between items (or other :class:`Entity` objects)
+    #: and values of the property.  Typical properties are *population*
+    #: (using numbers as values), *binomial name* (using strings as values),
+    #: but also *has father* and *author of* (both using items as values).
+    #:
+    #: .. seealso::
+    #:
+    #:    Properties_ --- Wikibase Data Model
+    #:       The data model of Wikibase describes the structure of
+    #:       the data that is handled in Wikibase.
+    #:
+    #: .. _Properties: https://mediawiki.org/wiki/Wikibase/DataModel#Properties
+    property = 'property'
+
+
 class Entity:
     """Wikidata entity.  Can be an item or a property.  Its attrributes
     can be lazily loaded.
@@ -61,6 +108,16 @@ class Entity:
         self.id = id
         self.client = client
         self.data = None  # type: Optional[object]
+
+    @property
+    def type(self) -> EntityType:
+        """(:class:`EntityType`) The type of entity, :attr:`~EntityType.item`
+        or :attr:`~EntityType.property`.
+
+        .. versionadded:: 0.2.0
+
+        """
+        return EntityType(self.attributes['type'])
 
     @property
     def attributes(self) -> Mapping[str, object]:

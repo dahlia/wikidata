@@ -27,3 +27,13 @@ def fx_loaded_entity(fx_client: Client) -> Entity:
     entity = fx_client.get(EntityId('Q494290'))
     entity.load()
     return entity
+
+
+@fixture
+def fx_item(fx_loaded_entity: Entity) -> Entity:
+    return fx_loaded_entity
+
+
+@fixture
+def fx_property(fx_client: Client) -> Entity:
+    return fx_client.get(EntityId('P2003'))

@@ -3,7 +3,7 @@ import json
 from babel.core import Locale  # type: ignore
 
 from .mock import FIXTURES_PATH
-from wikidata.entity import Entity
+from wikidata.entity import Entity, EntityType
 from wikidata.multilingual import MultilingualText
 
 
@@ -29,6 +29,11 @@ def test_entity_description(fx_loaded_entity: Entity,
         'English rock band'
     assert fx_unloaded_entity.description[Locale.parse('ko')] == \
         '영국의 락 밴드'
+
+
+def test_entity_type(fx_item: Entity, fx_property: Entity):
+    assert fx_item.type == EntityType.item
+    assert fx_property.type == EntityType.property
 
 
 def test_entity_attributes(fx_unloaded_entity: Entity,
