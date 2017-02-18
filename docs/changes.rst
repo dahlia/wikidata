@@ -4,7 +4,7 @@ Changelog
 Version 0.2.0
 '''''''''''''
 
-To be released.
+Released on February 19, 2017.
 
 - Made :class:`~wikidata.entity.Entity` multidict.  Now it satisfies
   :class:`~typing.Mapping`\ [:class:`~wikidata.entity.Entity`, :class:`object`]
