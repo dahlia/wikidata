@@ -5,6 +5,10 @@ Wikidata_ client library for Python
    :target: https://pypi.python.org/pypi/Wikidata
    :alt: Latest PyPI version
 
+.. image:: https://readthedocs.org/projects/wikidata/badge/?version=latest
+   :target: https://wikidata.readthedocs.io/
+   :alt: Documentation Status
+
 .. image:: https://travis-ci.org/dahlia/wikidata.svg
    :alt: Build Status
    :target: https://travis-ci.org/dahlia/wikidata
