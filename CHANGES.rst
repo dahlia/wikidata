@@ -11,6 +11,8 @@ To be released.
 - Added :attr:`~wikidata.client.Client.entity_type_guess` option and
   :meth:`~wikidata.client.Client.guess_entity_type()` method to
   :class:`~wikidata.client.Client` class.
+- Implemented :class:`~typing.Hashable` protocol and :token:`==`/:token:`!=`
+  operators to :class:`~wikidata.entity.Entity` for equality test.
 
 
 Version 0.1.0

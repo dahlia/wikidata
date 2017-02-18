@@ -2,8 +2,9 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+import collections.abc
 import enum
-from typing import TYPE_CHECKING, Mapping, NewType, Optional, Union
+from typing import TYPE_CHECKING, Hashable, Mapping, NewType, Optional, Union
 
 from babel.core import Locale, UnknownLocaleError
 
@@ -95,9 +96,14 @@ class EntityType(enum.Enum):
     property = 'property'
 
 
-class Entity:
+class Entity(Hashable if TYPE_CHECKING else collections.abc.Hashable):
     """Wikidata entity.  Can be an item or a property.  Its attrributes
     can be lazily loaded.
+
+    .. versionchanged:: 0.2.0
+
+       Implemented :class:`~typing.Hashable` protocol and
+       :token:`==`/:token:`!=` operators for equality test.
 
     """
 
@@ -108,6 +114,17 @@ class Entity:
         self.id = id
         self.client = client
         self.data = None  # type: Optional[object]
+
+    def __eq__(self, other: 'Entity') -> bool:
+        if not isinstance(other, type(self)):
+            raise TypeError(
+                'expected an instance of {0.__module__}.{0.__qualname__}, '
+                'not {!r}'.format(type(self), other)
+            )
+        return other.id == self.id and self.client is other.client
+
+    def __hash__(self) -> int:
+        return hash((self.id, id(self.client)))
 
     @property
     def type(self) -> EntityType:

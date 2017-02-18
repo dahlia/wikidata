@@ -9,6 +9,24 @@ from wikidata.entity import Entity, EntityId, EntityType
 from wikidata.multilingual import MultilingualText
 
 
+def test_entity_equality(fx_client_opener: urllib.request.OpenerDirector,
+                         fx_client: Client,
+                         fx_loaded_entity: Entity):
+    # When entity id and client are the same
+    assert fx_loaded_entity is fx_client.get(fx_loaded_entity.id)
+    assert fx_loaded_entity == fx_client.get(fx_loaded_entity.id)
+    assert hash(fx_loaded_entity) == hash(fx_client.get(fx_loaded_entity.id))
+    # When entity id differs
+    assert fx_loaded_entity is not fx_client.get(EntityId('Q1299'))
+    assert fx_loaded_entity != fx_client.get(EntityId('Q1299'))
+    assert hash(fx_loaded_entity) != hash(fx_client.get(EntityId('Q1299')))
+    # When client differs
+    client = Client(opener=fx_client_opener)
+    assert fx_loaded_entity is not client.get(fx_loaded_entity.id)
+    assert fx_loaded_entity != client.get(fx_loaded_entity.id)
+    assert hash(fx_loaded_entity) != hash(client.get(fx_loaded_entity.id))
+
+
 def test_entity_label(fx_loaded_entity: Entity,
                       fx_unloaded_entity: Entity):
     assert isinstance(fx_loaded_entity.label, MultilingualText)
