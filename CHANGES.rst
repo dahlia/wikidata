@@ -6,6 +6,9 @@ Version 0.2.0
 
 To be released.
 
+- Made :class:`~wikidata.entity.Entity` multidict.  Now it satisfies
+  :class:`~typing.Mapping`\ [:class:`~wikidata.entity.Entity`, :class:`object`]
+  protocol.
 - Added :attr:`Entity.type <wikidata.entity.Entity.type>` property and
   :class:`~wikidata.entity.EntityType` enum class to represent it.
 - Added :attr:`~wikidata.client.Client.entity_type_guess` option and

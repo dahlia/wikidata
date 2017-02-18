@@ -1,7 +1,9 @@
 import json
+from typing import Iterable
 import urllib.request
 
 from babel.core import Locale  # type: ignore
+from pytest import raises
 
 from .mock import FIXTURES_PATH
 from wikidata.client import Client
@@ -70,6 +72,50 @@ def test_entity_type(fx_item: Entity,
     assert item.data['type'] == 'item'
     assert prop.type == EntityType.property
     assert prop.data['type'] == 'property'
+
+
+def test_entity_mapping(fx_client: Client,
+                        fx_loaded_entity: Entity):
+    occupation = fx_client.get(EntityId('P106'))
+    musicbrainz_id = fx_client.get(EntityId('P434'))
+    singer = fx_client.get(EntityId('Q177220'))
+    instagram_username = fx_client.get(EntityId('P2003'))
+    assert len(fx_loaded_entity) == 13
+    expected_ids = {
+        'P19', 'P21', 'P27', 'P31', 'P106', 'P136', 'P345', 'P434', 'P569',
+        'P646', 'P1303', 'P1728', 'P1953'
+    }
+    expected = {fx_client.get(EntityId(pid)) for pid in expected_ids}
+    assert set(fx_loaded_entity) == expected
+    assert musicbrainz_id in fx_loaded_entity
+    assert (fx_loaded_entity[musicbrainz_id] ==
+            fx_loaded_entity.get(musicbrainz_id) ==
+            fx_loaded_entity.get(musicbrainz_id, ...) ==
+            '3eb63662-a02c-4d2d-9544-845cd92fd4e7')
+    assert (fx_loaded_entity.getlist(musicbrainz_id) ==
+            ['3eb63662-a02c-4d2d-9544-845cd92fd4e7'])
+    assert occupation in fx_loaded_entity
+    assert (fx_loaded_entity[occupation] ==
+            fx_loaded_entity.get(occupation) ==
+            fx_loaded_entity.get(occupation, ...) ==
+            singer)
+    assert (fx_loaded_entity.getlist(occupation) ==
+            [singer, fx_client.get(EntityId('Q753110'))])
+    assert instagram_username not in fx_loaded_entity
+    with raises(KeyError):
+        fx_loaded_entity[instagram_username]
+    assert fx_loaded_entity.get(instagram_username) is None
+    assert fx_loaded_entity.get(instagram_username, ...) is ...
+    assert fx_loaded_entity.getlist(instagram_username) == []
+    assert (dict(fx_loaded_entity.iterlists()) ==
+            dict(fx_loaded_entity.lists()) ==
+            {p: fx_loaded_entity.getlist(p) for p in expected})
+
+    def sorted_list(v: Iterable) -> list:
+        return list(sorted(v, key=str))
+    assert (sorted_list(fx_loaded_entity.iterlistvalues()) ==
+            sorted_list(fx_loaded_entity.listvalues()) ==
+            sorted_list(fx_loaded_entity.getlist(p) for p in expected))
 
 
 def test_entity_attributes(fx_unloaded_entity: Entity,
