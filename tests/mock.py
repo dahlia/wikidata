@@ -18,7 +18,7 @@ class FixtureOpener(urllib.request.OpenerDirector):
 
     def __init__(self, base_url: str) -> None:
         self.base_url = urllib.parse.urlparse(
-            urllib.parse.urljoin(base_url, './Special:EntityData/')
+            urllib.parse.urljoin(base_url, './wiki/Special:EntityData/')
         )
         cls = type(self)
         self.logger = logging.getLogger(cls.__qualname__) \

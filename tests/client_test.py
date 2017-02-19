@@ -46,4 +46,4 @@ def test_client_request(fx_client: Client):
 def test_client_repr():
     assert repr(Client(repr_string='repr_string test')) == 'repr_string test'
     assert repr(Client()) == \
-        "wikidata.client.Client('https://www.wikidata.org/wiki/')"
+        "wikidata.client.Client('https://www.wikidata.org/')"

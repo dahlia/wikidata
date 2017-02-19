@@ -6,6 +6,12 @@ Version 0.3.0
 
 To be released.
 
+- The meaning of :class:`~wikidata.client.Client` constructor's ``base_url``
+  prameter beccame not to contain the trailing path ``wiki/`` from
+  ``https://www.wikidata.org/wiki/``.  As its meaning changed, the value of
+  :const:`~wikidata.client.WIKIDATA_BASE_URL` constant also changed to not
+  have the trailing path.
+
 
 Version 0.2.0
 '''''''''''''

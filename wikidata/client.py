@@ -14,7 +14,14 @@ from .entity import Entity, EntityId, EntityType
 __all__ = 'WIKIDATA_BASE_URL', 'Client'
 
 
-WIKIDATA_BASE_URL = 'https://www.wikidata.org/wiki/'
+#: (:class:`str`) The default ``base_url`` of :class:`Client` constructor.
+#:
+#: .. versionchanged:: 0.3.0
+#:    As the meaning of :class:`Client` constructor's ``base_url`` parameter,
+#:    it now became to ``https://www.wikidata.org/`` from
+#:    ``https://www.wikidata.org/wiki/`` (which contained the trailing path
+#:    ``wiki/``).
+WIKIDATA_BASE_URL = 'https://www.wikidata.org/'
 
 
 class Client:
@@ -31,6 +38,11 @@ class Client:
                               :attr:`~.entity.Entity.id` for less HTTP
                               requests.  :const:`True` by default.
     :type entity_type_guess: :class:`bool`
+
+    .. versionchanged:: 0.3.0
+       The meaning of ``base_url`` parameter changed.  It originally meant
+       ``https://www.wikidata.org/wiki/`` which contained the trailing path
+       ``wiki/``, but now it means only ``https://www.wikidata.org/``.
 
     .. versionadded:: 0.2.0
        The ``entity_type_guess`` option.
@@ -107,7 +119,7 @@ class Client:
     ]:
         url = urllib.parse.urljoin(
             self.base_url,
-            './Special:EntityData/{}.json'.format(id)
+            './wiki/Special:EntityData/{}.json'.format(id)
         )
         response = self.opener.open(url)
         buffer_ = io.TextIOWrapper(response, encoding='utf-8')
