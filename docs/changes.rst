@@ -6,6 +6,14 @@ Version 0.3.0
 
 To be released.
 
+- Now :class:`~wikidata.client.Client` became able to customize how it decodes
+  datavalues to Python objects.
+
+  - Added :mod:`wikidata.datavalue` and :class:`~wikidata.datavalue.Decoder`
+    class inside it.
+  - Added :attr:`~.wikidata.client.Client.datavalue_decoder` option to
+    :class:`~wikidata.client.Client`.
+
 - The meaning of :class:`~wikidata.client.Client` constructor's ``base_url``
   prameter beccame not to contain the trailing path ``wiki/`` from
   ``https://www.wikidata.org/wiki/``.  As its meaning changed, the value of

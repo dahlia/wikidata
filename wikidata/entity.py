@@ -3,7 +3,6 @@
 
 """
 import collections.abc
-import datetime
 import enum
 import logging
 from typing import (TYPE_CHECKING,
@@ -183,54 +182,9 @@ class Entity(Mapping['Entity', object]
         if logger.isEnabledFor(logging.DEBUG):
             logger.debug('claim data: %s',
                          __import__('pprint').pformat(claims))
-        client = self.client
-
-        def decode(datavalue: Mapping[str, object]):  # FIXME
-            type_ = datavalue['type']
-            value = datavalue['value']
-            if type_ == 'string':
-                return value
-            elif type_ == 'time':
-                cal = value['calendarmodel']
-                if cal == 'http://www.wikidata.org/entity/Q1985727':
-                    time = value['time']
-                    if time[0] != '+':
-                        raise ValueError(
-                            '{!r}: only AD (CE) is supported: {!r}'.format(
-                                time, datavalue
-                            )
-                        )
-                    elif value['timezone'] != 0:
-                        raise ValueError(
-                            '{!r}: timezone other than 0 is unsupported: '
-                            '{!r}'.format(value['timezone'], datavalue)
-                        )
-                    elif value['before'] != 0 or value['after'] != 0:
-                        raise ValueError(
-                            'Uncertainty range time (represented using before/'
-                            'after) is unsupported: ' + repr(datavalue)
-                        )
-                    precision = value['precision']
-                    if precision == 11:
-                        return datetime.date(int(time[1:5]), int(time[6:8]),
-                                             int(time[9:11]))
-                    elif 12 <= precision <= 14:
-                        return datetime.datetime.strptime(
-                            time[1:],
-                            '%Y-%m-%dT%H:%M:%S%z'
-                        )
-                    else:
-                        raise ValueError(
-                            '{!r}: time precision other than 11 to 14 is '
-                            'unsupported: {!r}'.format(precision, datavalue)
-                        )
-                raise ValueError('{!r} is unsupported calendarmodel for time '
-                                 'datavalue: {!r}'.format(cal, datavalue))
-            elif type_ == 'wikibase-entityid':
-                return client.get(value['id'])
-            raise ValueError('{0[type]} is unsupported datavalue '
-                             'type: {0!r}'.format(datavalue))
-        return [decode(claim['mainsnak']['datavalue']) for claim in claims]
+        decode = self.client.decode_datavalue
+        return [decode(snak['datatype'], snak['datavalue'])
+                for snak in (claim['mainsnak'] for claim in claims)]
 
     def iterlists(self) -> Iterator[Tuple['Entity', Sequence[object]]]:
         for prop in self:

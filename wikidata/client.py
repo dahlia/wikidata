@@ -4,12 +4,17 @@
 """
 import io
 import json
-from typing import Mapping, MutableMapping, Optional, Sequence, Union, cast
+from typing import (TYPE_CHECKING,
+                    Callable, Mapping, MutableMapping, Optional, Sequence,
+                    Union, cast)
 import urllib.parse
 import urllib.request
 import weakref
 
 from .entity import Entity, EntityId, EntityType
+
+if TYPE_CHECKING:
+    from .datavalue import Decoder  # noqa: F401
 
 __all__ = 'WIKIDATA_BASE_URL', 'Client'
 
@@ -56,9 +61,22 @@ class Client:
     #: .. versionadded:: 0.2.0
     entity_type_guess = True
 
+    #: (:class:`~typing.Union`\ [:class:`~.datavalue.Decoder`,
+    #: :class:`~typing.Callable`\ [[:class:`Client`, :class:`str`,
+    #: :class:`~typing.Mapping`\ [:class:`str`, :class:`object`]],
+    #: :class:`object`]])
+    #: The function to decode the given datavalue.  It's typically an instance
+    #: of :class:`~.decoder.Decoder` or its subclass.
+    datavalue_decoder = None
+
     def __init__(self,
                  base_url: str=WIKIDATA_BASE_URL,
                  opener: Optional[urllib.request.OpenerDirector]=None,
+                 datavalue_decoder: Union['Decoder',
+                                          Callable[['Client', str,
+                                                   Mapping[str, object]],
+                                                   object],
+                                          None]=None,
                  entity_type_guess: bool=True,
                  repr_string: Optional[str]=None) -> None:
         if opener is None:
@@ -69,8 +87,13 @@ class Client:
                     pass
             opener = urllib.request._opener  # type: ignore
         assert isinstance(opener, urllib.request.OpenerDirector)
+        if datavalue_decoder is None:
+            from .datavalue import Decoder  # noqa: F811
+            datavalue_decoder = Decoder()
+        assert callable(datavalue_decoder)
         self.base_url = base_url
         self.opener = opener  # type: urllib.request.OpenerDirector
+        self.datavalue_decoder = datavalue_decoder
         self.entity_type_guess = entity_type_guess
         self.identity_map = cast(MutableMapping[EntityId, Entity],
                                  weakref.WeakValueDictionary())
@@ -108,6 +131,17 @@ class Client:
             return EntityType.item
         elif entity_id[0] == 'P':
             return EntityType.property
+
+    def decode_datavalue(self,
+                         datatype: str,
+                         datavalue: Mapping[str, object]) -> object:
+        """Decode the given ``datavalue`` using the configured
+        :attr:`datavalue_decoder`.
+
+        .. versionadded:: 0.3.0
+
+        """
+        return self.datavalue_decoder(self, datatype, datavalue)
 
     def request(self, id: EntityId) -> Union[
         bool, int, float, str,

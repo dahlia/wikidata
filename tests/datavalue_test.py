@@ -1,0 +1,132 @@
+import datetime
+from typing import Dict, cast
+
+from pytest import mark, raises
+
+from wikidata.client import Client
+from wikidata.datavalue import DatavalueError, Decoder
+from wikidata.entity import Entity
+
+
+def test_datavalue_error():
+    with raises(TypeError):
+        DatavalueError()
+    with raises(TypeError):
+        DatavalueError('message')
+    assert str(DatavalueError('message', {'type': 'string', 'value': '...'})) \
+        == "message: {'type': 'string', 'value': '...'}"
+    assert str(DatavalueError('msg', {'foo': 'bar'})) == "msg: {'foo': 'bar'}"
+
+
+def test_decoder_missing_type(fx_client: Client):
+    d = Decoder()
+    with raises(DatavalueError):
+        d(fx_client, 'string', {'value': '...'})
+
+
+def test_decoder_missing_value(fx_client: Client):
+    d = Decoder()
+    with raises(DatavalueError):
+        d(fx_client, 'string', {'type': 'string'})
+
+
+def test_decoder_unsupported_type(fx_client: Client):
+    d = Decoder()
+    with raises(DatavalueError):
+        d(fx_client, 'unsupportedtype', {'type': 'unsupport', 'value': '...'})
+    with raises(DatavalueError):
+        d(fx_client, 'string', {'type': 'unsupport', 'value': '...'})
+
+
+@mark.parametrize('datatype', ['string', 'wikibase-item'])
+def test_decoder_wikibase_entityid(datatype: str,
+                                   fx_client: Client,
+                                   fx_loaded_entity: Entity):
+    d = Decoder()
+    with raises(DatavalueError):
+        d(
+            fx_client, datatype,
+            {'type': 'wikibase-entityid', 'value': 'not mapping'}
+        )
+    with raises(DatavalueError):
+        d(
+            fx_client, datatype,
+            {'type': 'wikibase-entityid', 'value': {}}  # no id
+        )
+    decoded = d(
+        fx_client, datatype,
+        {'type': 'wikibase-entityid', 'value': {'id': fx_loaded_entity.id}}
+    )
+    assert decoded is fx_loaded_entity
+
+
+@mark.parametrize('datatype', ['string', 'external-id'])
+def test_decoder_string(datatype: str, fx_client: Client):
+    d = Decoder()
+    assert d(fx_client, datatype,
+             {'type': 'string', 'value': 'foobar'}) == 'foobar'
+
+
+@mark.parametrize('datatype', ['time', 'string'])
+def test_decoder__time(datatype: str, fx_client: Client):
+    d = Decoder()
+    valid_value = {
+        'calendarmodel': 'http://www.wikidata.org/entity/Q1985727',
+        'time': '+2017-02-22T02:53:12Z',
+        'timezone': 0, 'before': 0, 'after': 0, 'precision': 14,
+    }
+    valid = {'type': 'time', 'value': valid_value}
+
+    def other_value(**kwargs) -> Dict[str, object]:
+        value = dict(valid_value, **cast(Dict[str, object], kwargs))
+        return dict(valid, value={
+            k: v for k, v in value.items() if v is not None
+        })
+    assert (datetime.date(2017, 2, 22) ==
+            d(fx_client, datatype, other_value(precision=11)))
+    utc = datetime.timezone.utc
+    assert (datetime.datetime(2017, 2, 22, 2, 53, 12, tzinfo=utc) ==
+            d(fx_client, datatype, valid))
+    with raises(DatavalueError):
+        d(fx_client, datatype, dict(valid, value='not mapping'))
+    with raises(DatavalueError):
+        d(fx_client, datatype, other_value(calendarmodel=None))
+        # no calendarmodel field
+    with raises(DatavalueError):
+        d(fx_client, datatype, other_value(time=None))
+        # no time field
+    with raises(DatavalueError):
+        d(
+            fx_client, datatype,
+            other_value(calendarmodel='unspported calendar model')
+        )
+    with raises(DatavalueError):
+        d(fx_client, datatype, other_value(time='-2017-02-22T02:53:12Z'))
+        # only AD (CE) time is supported
+    with raises(DatavalueError):
+        d(fx_client, datatype, other_value(timezone=None))
+        # timezone field is missing
+    with raises(DatavalueError):
+        d(fx_client, datatype, other_value(timezone=60))
+        # timezone field should be 0
+    with raises(DatavalueError):
+        d(fx_client, datatype, other_value(after=None))
+        # after field is missing
+    with raises(DatavalueError):
+        d(fx_client, datatype, other_value(before=None))
+        # before field is missing
+    with raises(DatavalueError):
+        d(fx_client, datatype, other_value(after=60))
+        # after field (other than 0) is unsupported
+    with raises(DatavalueError):
+        d(fx_client, datatype, other_value(before=60))
+        # before field (other than 0) is unsupported
+    with raises(DatavalueError):
+        d(fx_client, datatype, other_value(precision=None))
+        # precision field is missing
+    for p in range(1, 15):
+        if p in (11, 14):
+            continue
+        with raises(DatavalueError):
+            d(fx_client, datatype, other_value(precision=p))
+            # precision (other than 11 or 14) is unsupported
