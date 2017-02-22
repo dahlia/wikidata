@@ -19,6 +19,7 @@ import datetime
 from typing import TYPE_CHECKING, Mapping
 
 from .client import Client
+from .commonsmedia import File
 if TYPE_CHECKING:
     from .entity import Entity  # noqa: F401
 
@@ -203,3 +204,8 @@ class Decoder:
                 'unsupported'.format(precision),
                 datavalue
             )
+
+    def commonsMedia__string(self,
+                             client: Client,
+                             datavalue: Mapping[str, object]) -> str:
+        return File(client, 'File:' + datavalue['value'])

@@ -14,8 +14,11 @@ To be released.
   - Added :attr:`~.wikidata.client.Client.datavalue_decoder` option to
     :class:`~wikidata.client.Client`.
 
-- Added :mod:`wikidata.commonsmedia` module and
-  :class:`~wikidata.commonsmedia.File` class inside it.
+- Now files on Wikimeda Commons became able to be handled.
+
+  - New decoder became able to parse Wikimedia Commons files e.g. images.
+  - Added :mod:`wikidata.commonsmedia` module and
+    :class:`~wikidata.commonsmedia.File` class inside it.
 
 - The meaning of :class:`~wikidata.client.Client` constructor's ``base_url``
   prameter beccame not to contain the trailing path ``wiki/`` from

@@ -4,6 +4,7 @@ from typing import Dict, cast
 from pytest import mark, raises
 
 from wikidata.client import Client
+from wikidata.commonsmedia import File
 from wikidata.datavalue import DatavalueError, Decoder
 from wikidata.entity import Entity
 
@@ -130,3 +131,11 @@ def test_decoder__time(datatype: str, fx_client: Client):
         with raises(DatavalueError):
             d(fx_client, datatype, other_value(precision=p))
             # precision (other than 11 or 14) is unsupported
+
+
+def test_decoder_commonsMedia__string(fx_client: Client):
+    d = Decoder()
+    f = d(fx_client, 'commonsMedia',
+          {'value': 'The Fabs.JPG', 'type': 'string'})
+    assert isinstance(f, File)
+    assert f.title == 'File:The Fabs.JPG'
