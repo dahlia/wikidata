@@ -26,6 +26,9 @@ To be released.
   :const:`~wikidata.client.WIKIDATA_BASE_URL` constant also changed to not
   have the trailing path.
 
+- Added ``load`` option to :meth:`Client.get() <wikidata.client.Client.get>`
+  method.
+
 
 Version 0.2.0
 '''''''''''''

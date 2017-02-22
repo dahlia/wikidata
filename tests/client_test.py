@@ -9,6 +9,9 @@ def test_client_get(fx_client: Client):
     assert isinstance(entity, Entity)
     assert entity.data is None
     assert entity.id == EntityId('Q1299')
+    entity2 = fx_client.get(EntityId('Q1299'), load=True)
+    assert entity2.data is not None
+    assert entity2 is entity
 
 
 def test_client_guess_entity_type(

@@ -99,13 +99,29 @@ class Client:
                                  weakref.WeakValueDictionary())
         self.repr_string = repr_string
 
-    def get(self, entity_id: EntityId) -> Entity:
-        """Get a Wikidata entity by its :class:`~.entity.EntityId`."""
+    def get(self, entity_id: EntityId, load: bool=False) -> Entity:
+        """Get a Wikidata entity by its :class:`~.entity.EntityId`.
+
+        :param entity_id: The :attr:`~.entity.Entity.id` of
+                          the :class:`~.entity.Entity` to find.
+        :type eneity_id: :class:`~.entity.EntityId`
+        :param load: Eager loading on :const:`True`.
+                     Lazy loading (:const:`False`) by default.
+        :type load: :class:`bool`
+        :return: The found entity.
+        :rtype: :class:`~.entity.Entity`
+
+        .. versionadded:: 0.3.0
+           The ``load`` option.
+
+        """
         try:
             entity = self.identity_map[entity_id]
         except KeyError:
             entity = Entity(entity_id, self)
             self.identity_map[entity_id] = entity
+        if load:
+            entity.load()
         return entity
 
     def guess_entity_type(self, entity_id: EntityId) -> Optional[EntityType]:

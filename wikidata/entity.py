@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 __all__ = 'Entity', 'EntityId', 'EntityType'
 
 
-#: The identifier of each :class:`Entity`.
+#: The identifier of each :class:`Entity`.  Alias of :class:`str`.
 EntityId = NewType('EntityId', str)
 
 
