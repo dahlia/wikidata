@@ -48,7 +48,7 @@ setup(
     python_requires='>=3.3.0',
     install_requires=['Babel >= 2.0'],
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'Intended Audience :: Information Technology',
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',  # noqa: E501
