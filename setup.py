@@ -2,7 +2,7 @@ import ast
 import os
 import os.path
 
-from setuptools import setup
+from setuptools import find_packages, setup
 
 
 def get_version():
@@ -44,9 +44,10 @@ setup(
     author='Hong Minhee',
     author_email='hong.minhee' '@' 'gmail.com',
     license='GPLv3 or later',
-    packages=['wikidata'],
+    packages=find_packages(exclude=['docs', 'tests']),
     python_requires='>=3.3.0',
     install_requires=['Babel >= 2.0'],
+    keywords='wikidata ontology',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',

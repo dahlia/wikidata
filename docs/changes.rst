@@ -4,7 +4,7 @@ Changelog
 Version 0.3.0
 '''''''''''''
 
-To be released.
+Released on February 23, 2017.
 
 - Now :class:`~wikidata.client.Client` became able to customize how it decodes
   datavalues to Python objects.
