@@ -51,9 +51,7 @@ def fx_client(fx_client_opener: urllib.request.OpenerDirector) -> Client:
 
 
 @fixture(autouse=True)
-def add_doctest_namespace(doctest_namespace,
-                          fx_client: Client,
-                          fx_loaded_entity: Entity):
+def add_doctest_namespace(doctest_namespace, fx_client: Client):
     doctest_namespace['client'] = fx_client
 
 
