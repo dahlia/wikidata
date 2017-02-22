@@ -5,6 +5,7 @@ from pytest import fixture
 
 from .mock import FixtureOpener
 from wikidata.client import WIKIDATA_BASE_URL, Client
+from wikidata.commonsmedia import File
 from wikidata.entity import Entity, EntityId
 
 
@@ -76,3 +77,8 @@ def fx_item(fx_loaded_entity: Entity) -> Entity:
 @fixture
 def fx_property(fx_client: Client) -> Entity:
     return fx_client.get(EntityId('P2003'))
+
+
+@fixture
+def fx_file(fx_client: Client) -> File:
+    return File(fx_client, 'File:Gandhara Buddha (tnm).jpeg')

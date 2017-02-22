@@ -5,7 +5,7 @@ import urllib.request
 from babel.core import Locale  # type: ignore
 from pytest import raises
 
-from .mock import FIXTURES_PATH
+from .mock import ENTITY_FIXTURES_PATH
 from wikidata.client import Client
 from wikidata.entity import Entity, EntityId, EntityType
 from wikidata.multilingual import MultilingualText
@@ -121,13 +121,14 @@ def test_entity_mapping(fx_client: Client,
 def test_entity_attributes(fx_unloaded_entity: Entity,
                            fx_loaded_entity: Entity):
     for entity in fx_unloaded_entity, fx_loaded_entity:
-        with (FIXTURES_PATH / '{}.json'.format(entity.id)).open('r') as f:
+        filename = '{}.json'.format(entity.id)
+        with (ENTITY_FIXTURES_PATH / filename).open('r') as f:
             assert entity.attributes == json.load(f)['entities'][entity.id]
 
 
 def test_entity_load(fx_unloaded_entity: Entity):
     fx_unloaded_entity.load()
-    with (FIXTURES_PATH / 'Q1299.json').open('r') as f:
+    with (ENTITY_FIXTURES_PATH / 'Q1299.json').open('r') as f:
         assert fx_unloaded_entity.data == json.load(f)['entities']['Q1299']
 
 

@@ -143,7 +143,7 @@ class Client:
         """
         return self.datavalue_decoder(self, datatype, datavalue)
 
-    def request(self, id: EntityId) -> Union[
+    def request(self, path: str) -> Union[
         bool, int, float, str,
         Mapping[
             str,
@@ -151,10 +151,7 @@ class Client:
         ],
         Sequence[Union[bool, int, float, str, Mapping[str, object], Sequence]]
     ]:
-        url = urllib.parse.urljoin(
-            self.base_url,
-            './wiki/Special:EntityData/{}.json'.format(id)
-        )
+        url = urllib.parse.urljoin(self.base_url, path)
         response = self.opener.open(url)
         buffer_ = io.TextIOWrapper(response, encoding='utf-8')
         result = json.load(buffer_)

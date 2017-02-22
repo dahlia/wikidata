@@ -26,7 +26,7 @@ def test_client_guess_entity_type(
 
 
 def test_client_request(fx_client: Client):
-    data = fx_client.request(EntityId('Q1299'))
+    data = fx_client.request('./wiki/Special:EntityData/Q1299.json')
     assert isinstance(data, dict)
     assert set(data) == {'entities'}
     entities = data['entities']

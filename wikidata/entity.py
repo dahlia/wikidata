@@ -230,7 +230,8 @@ class Entity(Mapping['Entity', object]
         return self.data
 
     def load(self) -> None:
-        self.data = self.client.request(self.id)['entities'][self.id]
+        url = './wiki/Special:EntityData/{}.json'.format(self.id)
+        self.data = self.client.request(url)['entities'][self.id]
 
     def __repr__(self) -> str:
         if self.data:
