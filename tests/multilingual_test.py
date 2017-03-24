@@ -1,6 +1,6 @@
 import functools
 
-from babel.core import Locale  # type: ignore
+from babel.core import Locale
 from pytest import fixture, raises
 
 from wikidata.multilingual import MultilingualText, normalize_locale_code

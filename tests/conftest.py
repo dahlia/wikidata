@@ -1,4 +1,4 @@
-from typing import AbstractSet, FrozenSet, Sequence, Set, Union, cast
+from typing import AbstractSet, FrozenSet, Optional, Sequence, Set, Union, cast
 import urllib.request
 
 from pytest import fixture
@@ -9,7 +9,7 @@ from wikidata.commonsmedia import File
 from wikidata.entity import Entity, EntityId
 
 
-def pytest_assertrepr_compare(op: str, left, right) -> Sequence[str]:
+def pytest_assertrepr_compare(op: str, left, right) -> Optional[Sequence[str]]:
     # set of entities
     if op == '==' and isinstance(left, (set, frozenset)) and \
        isinstance(right, (set, frozenset)) and \
@@ -38,6 +38,7 @@ def pytest_assertrepr_compare(op: str, left, right) -> Sequence[str]:
             'Extra entities in the right set:',
             repr_ids(right_ids - left_ids),
         ]
+    return None
 
 
 @fixture

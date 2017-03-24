@@ -2,7 +2,7 @@ import json
 from typing import Iterable
 import urllib.request
 
-from babel.core import Locale  # type: ignore
+from babel.core import Locale
 from pytest import raises
 
 from .mock import ENTITY_FIXTURES_PATH
@@ -69,8 +69,10 @@ def test_entity_type(fx_item: Entity,
     item = noguess_client.get(EntityId('Q494290'))
     prop = noguess_client.get(EntityId('P434'))
     assert item.type == EntityType.item
+    assert item.data is not None
     assert item.data['type'] == 'item'
     assert prop.type == EntityType.property
+    assert prop.data is not None
     assert prop.data['type'] == 'property'
 
 

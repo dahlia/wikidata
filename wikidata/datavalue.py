@@ -16,7 +16,7 @@ but only need to satify::
 """
 import collections.abc
 import datetime
-from typing import TYPE_CHECKING, Mapping
+from typing import TYPE_CHECKING, Mapping, Union
 
 from .client import Client
 from .commonsmedia import File
@@ -113,6 +113,7 @@ class Decoder:
             type_ = datavalue['type']
         except KeyError:
             raise DatavalueError('no "type" specified', datavalue)
+        assert isinstance(type_, str)
         if 'value' not in datavalue:
             raise DatavalueError('no "value" field', datavalue)
         method_name = '{}__{}'.format(datatype, type_).replace('-', '_')
@@ -140,11 +141,14 @@ class Decoder:
         return client.get(id_)
 
     def string(self, client: Client, datavalue: Mapping[str, object]) -> str:
-        return datavalue['value']
+        value = datavalue['value']
+        assert isinstance(value, str)
+        return value
 
     def time(self,
              client: Client,
-             datavalue: Mapping[str, object]) -> datetime.date:
+             datavalue: Mapping[str, object]) -> Union[datetime.date,
+                                                       datetime.datetime]:
         value = datavalue['value']
         if not isinstance(value, collections.abc.Mapping):
             raise DatavalueError(
@@ -207,5 +211,5 @@ class Decoder:
 
     def commonsMedia__string(self,
                              client: Client,
-                             datavalue: Mapping[str, object]) -> str:
-        return File(client, 'File:' + datavalue['value'])
+                             datavalue: Mapping[str, object]) -> File:
+        return File(client, 'File:{0}'.format(datavalue['value']))

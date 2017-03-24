@@ -5,9 +5,8 @@
 import collections.abc
 import enum
 import logging
-from typing import (TYPE_CHECKING,
-                    Hashable, ItemsView, Iterator, Mapping, NewType, Optional,
-                    Sequence, Tuple, Union, ValuesView)
+from typing import (TYPE_CHECKING, Iterator, Mapping, NewType,
+                    Optional, Sequence, Tuple, Union)
 
 from babel.core import Locale, UnknownLocaleError
 
@@ -44,6 +43,7 @@ class multilingual_attribute:
                 except UnknownLocaleError:
                     return None
             attr = obj.attributes.get(self.attribute, {})
+            assert isinstance(attr, collections.abc.Mapping)
             pairs = (
                 (parse(item['language']), item['value'])
                 for item in attr.values()
@@ -99,10 +99,7 @@ class EntityType(enum.Enum):
     property = 'property'
 
 
-class Entity(Mapping['Entity', object]
-             if TYPE_CHECKING
-             else collections.abc.Mapping,
-             Hashable if TYPE_CHECKING else collections.abc.Hashable):
+class Entity(collections.abc.Mapping, collections.abc.Hashable):
     """Wikidata entity.  Can be an item or a property.  Its attrributes
     can be lazily loaded.
 
@@ -133,9 +130,9 @@ class Entity(Mapping['Entity', object]
     def __init__(self, id: EntityId, client: 'Client') -> None:
         self.id = id
         self.client = client
-        self.data = None  # type: Optional[object]
+        self.data = None  # type: Optional[Mapping[str, object]]
 
-    def __eq__(self, other: 'Entity') -> bool:
+    def __eq__(self, other) -> bool:
         if not isinstance(other, type(self)):
             raise TypeError(
                 'expected an instance of {0.__module__}.{0.__qualname__}, '
@@ -147,11 +144,15 @@ class Entity(Mapping['Entity', object]
         return hash((self.id, id(self.client)))
 
     def __len__(self) -> int:
-        return len(self.attributes.get('claims', {}))
+        claims_map = self.attributes.get('claims', {})
+        assert isinstance(claims_map, collections.abc.Mapping)
+        return len(claims_map)
 
     def __iter__(self) -> Iterator['Entity']:
         client = self.client
-        for prop_id in self.attributes.get('claims', {}):
+        claims_map = self.attributes.get('claims', {})
+        assert isinstance(claims_map, collections.abc.Mapping)
+        for prop_id in claims_map:
             yield client.get(prop_id)
 
     def __getitem__(self, key: 'Entity') -> object:
@@ -175,7 +176,9 @@ class Entity(Mapping['Entity', object]
         if not (isinstance(key, type(self)) and
                 key.type is EntityType.property):
             return []
-        claims = self.attributes.get('claims', {}).get(key.id, [])
+        claims_map = self.attributes.get('claims', {})
+        assert isinstance(claims_map, collections.abc.Mapping)
+        claims = claims_map.get(key.id, [])
         claims.sort(key=lambda claim: claim['rank'],  # FIXME
                     reverse=True)
         logger = logging.getLogger(__name__ + '.Entity.getitem')
@@ -190,13 +193,13 @@ class Entity(Mapping['Entity', object]
         for prop in self:
             yield prop, self.getlist(prop)
 
-    def lists(self) -> ItemsView['Entity', Sequence[object]]:
+    def lists(self) -> Sequence[Tuple['Entity', Sequence[object]]]:
         """Similar to :meth:`items()` except the returning pairs have
         each list of values instead of each single value.
 
         :return: The pairs of (key, values) where values is a sequence.
-        :rtype: :class:`~typing.ItemsView`\ [:class:`Entity`,
-                    :class:`~typing.Sequence`\ [:class:`object`]]
+        :rtype: :class:`~typing.Sequence`\ [:class:`~typing.Tuple`\ \
+[:class:`Entity`, :class:`~typing.Sequence`\ [:class:`object`]]]
 
         """
         return list(self.iterlists())
@@ -205,7 +208,7 @@ class Entity(Mapping['Entity', object]
         for _, values in self.iterlists():
             yield values
 
-    def listvalues(self) -> ValuesView[Sequence[object]]:
+    def listvalues(self) -> Sequence[Sequence[object]]:
         return list(self.iterlistvalues())
 
     @property
@@ -227,11 +230,18 @@ class Entity(Mapping['Entity', object]
     def attributes(self) -> Mapping[str, object]:
         if self.data is None:
             self.load()
+        assert self.data is not None
         return self.data
 
     def load(self) -> None:
         url = './wiki/Special:EntityData/{}.json'.format(self.id)
-        self.data = self.client.request(url)['entities'][self.id]
+        result = self.client.request(url)
+        assert isinstance(result, collections.abc.Mapping)
+        entities = result['entities']
+        assert isinstance(entities, collections.abc.Mapping)
+        data = entities[self.id]
+        assert isinstance(data, collections.abc.Mapping)
+        self.data = data
 
     def __repr__(self) -> str:
         if self.data:

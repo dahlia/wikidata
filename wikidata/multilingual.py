@@ -3,16 +3,14 @@
 
 """
 import collections.abc
-from typing import TYPE_CHECKING, Iterator, Mapping, Union
+from typing import Iterator, Mapping, Union
 
 from babel.core import Locale
 
 __all__ = 'MultilingualText', 'normalize_locale_code'
 
 
-class MultilingualText(Mapping[Locale, str]
-                       if TYPE_CHECKING
-                       else collections.abc.Mapping):
+class MultilingualText(collections.abc.Mapping):
 
     __slots__ = 'texts',
 

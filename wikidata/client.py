@@ -142,11 +142,12 @@ class Client:
 
         """
         if not self.entity_type_guess:
-            return
+            return None
         if entity_id[0] == 'Q':
             return EntityType.item
         elif entity_id[0] == 'P':
             return EntityType.property
+        return None
 
     def decode_datavalue(self,
                          datatype: str,
@@ -157,7 +158,9 @@ class Client:
         .. versionadded:: 0.3.0
 
         """
-        return self.datavalue_decoder(self, datatype, datavalue)
+        decode = cast(Callable[[Client, str, Mapping[str, object]], object],
+                      self.datavalue_decoder)
+        return decode(self, datatype, datavalue)
 
     def request(self, path: str) -> Union[
         bool, int, float, str,
@@ -169,7 +172,7 @@ class Client:
     ]:
         url = urllib.parse.urljoin(self.base_url, path)
         response = self.opener.open(url)
-        buffer_ = io.TextIOWrapper(response, encoding='utf-8')
+        buffer_ = io.TextIOWrapper(response, encoding='utf-8')  # type: ignore
         result = json.load(buffer_)
         return result
 
