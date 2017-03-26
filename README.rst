@@ -16,7 +16,7 @@ Wikidata_ client library for Python
 This package provides easy APIs to use Wikidata_ for Python.
 
 >>> from wikidata.client import Client
->>> client = Client()
+>>> client = Client()  # doctest: +SKIP
 >>> entity = client.get('Q20145', load=True)
 >>> entity
 <wikidata.entity.Entity Q20145 'IU'>
