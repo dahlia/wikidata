@@ -4,7 +4,7 @@ Changelog
 Version 0.4.0
 '''''''''''''
 
-To be released.
+Released on April 24, 2017.
 
 - Monolingual texts became able to be handled.
 
