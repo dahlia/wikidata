@@ -20,6 +20,7 @@ from typing import TYPE_CHECKING, Mapping, Union
 
 from .client import Client
 from .commonsmedia import File
+from .multilingual import MonolingualText
 if TYPE_CHECKING:
     from .entity import Entity  # noqa: F401
 
@@ -208,6 +209,12 @@ class Decoder:
                 'unsupported'.format(precision),
                 datavalue
             )
+
+    def monolingualtext(self,
+                        client: Client,
+                        datavalue: Mapping[str, object]) -> MonolingualText:
+        pair = datavalue['value']
+        return MonolingualText(pair['text'], pair['language'])  # type: ignore
 
     def commonsMedia__string(self,
                              client: Client,

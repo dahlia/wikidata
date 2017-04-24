@@ -7,6 +7,7 @@ from wikidata.client import Client
 from wikidata.commonsmedia import File
 from wikidata.datavalue import DatavalueError, Decoder
 from wikidata.entity import Entity
+from wikidata.multilingual import MonolingualText
 
 
 def test_datavalue_error():
@@ -131,6 +132,17 @@ def test_decoder__time(datatype: str, fx_client: Client):
         with raises(DatavalueError):
             d(fx_client, datatype, other_value(precision=p))
             # precision (other than 11 or 14) is unsupported
+
+
+def test_decoder_monolingualtext(fx_client: Client):
+    d = Decoder()
+    assert d(fx_client, 'monolingualtext', {
+        'type': 'monolingualtext',
+        'value': {
+            'language': 'ko',
+            'text': '윤동주',
+        },
+    }) == MonolingualText('윤동주', 'ko')  # type: ignore
 
 
 def test_decoder_commonsMedia__string(fx_client: Client):

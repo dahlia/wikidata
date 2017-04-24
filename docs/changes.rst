@@ -6,8 +6,10 @@ Version 0.4.0
 
 To be released.
 
-- Added :class:`~wikidata.multilingual.MonolingualText` type which is a true
-  subtype of :class:`str`.
+- Monolingual texts became able to be handled.
+
+  - Added :class:`~wikidata.multilingual.MonolingualText` type which is a true
+    subtype of :class:`str`.
 
 
 Version 0.3.0
