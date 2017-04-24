@@ -3,11 +3,11 @@
 
 """
 import collections.abc
-from typing import Iterator, Mapping, Union
+from typing import Iterator, Mapping, Type, Union
 
 from babel.core import Locale
 
-__all__ = 'MultilingualText', 'normalize_locale_code'
+__all__ = 'MonolingualText', 'MultilingualText', 'normalize_locale_code'
 
 
 class MultilingualText(collections.abc.Mapping):
@@ -47,6 +47,37 @@ class MultilingualText(collections.abc.Mapping):
         if self:
             return 'm{0!r}'.format(str(self))
         return '{0.__module__}.{0.__qualname__}({{}})'.format(type(self))
+
+
+class MonolingualText(str):
+    """Locale-denoted text.  It's almost equivalent to :class:`str`
+    (and indeed subclasses :class:`str`) except that it has two more
+    attribute: :attr:`locale` and :attr:`locale_code` that denote
+    what language the text is written in.
+
+    """
+
+    #: (:class:`str`) The code of :attr:`locale`.
+    locale_code = None  # type: Locale
+
+    def __new__(cls: Type[str],
+                text: str,
+                locale: Union[Locale, str]) -> 'MonolingualText':
+        self = str.__new__(cls, text)  # type: ignore
+        self.locale_code = normalize_locale_code(locale)
+        return self
+
+    @property
+    def locale(self) -> Locale:
+        """(:class:`~babel.core.Locale`) The language (locale) that the text is
+        written in.
+
+        """
+        return Locale.parse(self.locale_code)
+
+    def __repr__(self) -> str:
+        altrepr = '({0}:) {1!s}'.format(self.locale_code, self)
+        return '{0!r}[{1}:]'.format(altrepr, len(self.locale_code) + 4)
 
 
 def normalize_locale_code(locale: Union[Locale, str]) -> str:

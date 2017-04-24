@@ -3,7 +3,8 @@ import functools
 from babel.core import Locale
 from pytest import fixture, raises
 
-from wikidata.multilingual import MultilingualText, normalize_locale_code
+from wikidata.multilingual import (MonolingualText, MultilingualText,
+                                   normalize_locale_code)
 
 
 @fixture
@@ -55,6 +56,27 @@ def test_multilingual_text_repr(fx_multilingual_text: MultilingualText):
     assert repr(fx_multilingual_text) == "m'Yun Dong-ju'"
     assert repr(MultilingualText({})) == \
         "wikidata.multilingual.MultilingualText({})"
+
+
+def test_monolingual_text_locale():
+    a = MonolingualText('윤동주', 'ko')
+    assert a.locale_code == 'ko'
+    assert a.locale == Locale.parse('ko')
+    b = MonolingualText('윤동주', Locale.parse('ko_KR'))
+    assert b.locale_code == 'ko_KR'
+    assert b.locale == Locale.parse('ko_KR')
+    c = MonolingualText('周樹人', 'zh_Hant')
+    assert c.locale_code == 'zh_Hant'
+    assert c.locale == Locale.parse('zh_Hant')
+
+
+def test_monolingual_text_repr():
+    a = MonolingualText('윤동주', 'ko')
+    assert repr(a) == "'(ko:) 윤동주'[6:]"
+    assert eval(repr(a)) == str(a)
+    b = MonolingualText('周樹人', 'zh_Hant')
+    assert repr(b) == "'(zh_Hant:) 周樹人'[11:]"
+    assert eval(repr(b)) == str(b)
 
 
 def test_normalize_locale_code():
