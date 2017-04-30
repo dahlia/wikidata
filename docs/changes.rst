@@ -7,6 +7,15 @@ Version 0.5.0
 To be released.
 
 
+Version 0.4.1
+'''''''''''''
+
+Released on April 30, 2017.
+
+- Fixed :exc:`AssertionError` from :meth:`~wikidata.entities.Entity.getlist()`
+  on entities with empty claims.
+
+
 Version 0.4.0
 '''''''''''''
 
