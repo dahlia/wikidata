@@ -6,6 +6,9 @@ Version 0.4.1
 
 To be released.
 
+- Fixed :exc:`AssertionError` from :meth:`~wikidata.entities.Entity.getlist()`
+  on entities with empty claims.
+
 
 Version 0.4.0
 '''''''''''''

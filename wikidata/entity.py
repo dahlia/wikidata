@@ -176,7 +176,7 @@ class Entity(collections.abc.Mapping, collections.abc.Hashable):
         if not (isinstance(key, type(self)) and
                 key.type is EntityType.property):
             return []
-        claims_map = self.attributes.get('claims', {})
+        claims_map = self.attributes.get('claims') or {}
         assert isinstance(claims_map, collections.abc.Mapping)
         claims = claims_map.get(key.id, [])
         claims.sort(key=lambda claim: claim['rank'],  # FIXME
