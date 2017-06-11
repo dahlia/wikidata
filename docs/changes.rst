@@ -21,6 +21,10 @@ To be released.
     :class:`~wikidata.cache.MemoryCachePolicy`
        LRU cache in memory.
 
+    :class:`~wikidata.cache.ProxyCachePolicy`
+       Proxy/adapter to another proxy object.  Useful for utilizing third-party
+       cache libraries.
+
 
 Version 0.4.1
 '''''''''''''

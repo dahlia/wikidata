@@ -5,10 +5,13 @@
 
 """
 import collections
+import hashlib
+import logging
+import pickle
 from typing import NewType, Optional
 
 __all__ = ('CacheKey', 'CachePolicy', 'CacheValue',
-           'MemoryCachePolicy', 'NullCachePolicy')
+           'MemoryCachePolicy', 'NullCachePolicy', 'ProxyCachePolicy')
 
 
 #: The type of keys to look up cached values.  Alias of :class:`str`.
@@ -93,3 +96,54 @@ class MemoryCachePolicy(CachePolicy):
         self.values[key] = value
         while len(self.values) > self.max_size:
             self.values.popitem(last=False)
+
+
+class ProxyCachePolicy(CachePolicy):
+    """This proxy policy is a proxy or an adaptor to another cache object.
+    Cache objects can be anything if they satisfy the following interface::
+
+        def get(key: str) -> Optional[bytes]: pass
+        def set(key: str, value: bytes, timeout: int=0) -> None: pass
+        def delete(key: str) -> None: pass
+
+    (The above methods omit ``self`` parameters.)  It's compatible with
+    de facto interface for caching libraries in Python (e.g. python-memcached,
+    :mod:`werkzeug.contrib.cache`).
+
+    :param cache_object: The cache object to adapt.
+                         Read the above explanation.
+    :param timeout: Lifespan of every cache in seconds.  0 means no expiration.
+    :type timeout: :class:`int`
+    :param namespace: The common prefix attached to every cache key.
+                      ``'wd_'`` by default.
+    :type namespace: :class:`str`
+
+    """
+
+    def __init__(self, cache_object, timeout: int,
+                 namespace: str='wd_') -> None:
+        self.cache_object = cache_object
+        self.timeout = timeout  # type: int
+        self.namespace = namespace  # type: str
+
+    def encode_key(self, key: CacheKey) -> str:
+        k = self.namespace + hashlib.md5(key.encode('utf-8')).hexdigest()
+        logging.getLogger(__name__ + '.ProxyCachePolicy.encode_key').debug(
+            'Encoded from key %r: %r', key, k
+        )
+        return k
+
+    def get(self, key: CacheKey) -> Optional[CacheValue]:
+        k = self.encode_key(key)
+        v = self.cache_object.get(k)
+        if v is None:
+            return None
+        return pickle.loads(v)
+
+    def set(self, key: CacheKey, value: Optional[CacheValue]) -> None:
+        k = self.encode_key(key)
+        if value is None:
+            self.cache_object.delete(k)
+            return
+        v = pickle.dumps(value)
+        self.cache_object.set(k, v, self.timeout)
