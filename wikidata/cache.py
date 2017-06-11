@@ -4,9 +4,11 @@
 .. versionchanged:: 0.5.0
 
 """
+import collections
 from typing import NewType, Optional
 
-__all__ = 'CacheKey', 'CachePolicy', 'CacheValue', 'NullCachePolicy'
+__all__ = ('CacheKey', 'CachePolicy', 'CacheValue',
+           'MemoryCachePolicy', 'NullCachePolicy')
 
 
 #: The type of keys to look up cached values.  Alias of :class:`str`.
@@ -57,3 +59,37 @@ class NullCachePolicy(CachePolicy):
 
     def set(self, key: CacheKey, value: Optional[CacheValue]) -> None:
         pass
+
+
+class MemoryCachePolicy(CachePolicy):
+    """LRU (least recently used) cache in memory.
+
+    :param max_size: The maximum number of values to cache.  128 by default.
+    :type max_size: :class:`int`
+
+    """
+
+    def __init__(self, max_size: int=128) -> None:
+        self.max_size = max_size  # type: int
+        self.values = \
+            collections.OrderedDict()  # type: collections.OrderedDict
+
+    def get(self, key: CacheKey) -> Optional[CacheValue]:
+        try:
+            v = self.values[key]
+        except KeyError:
+            v = None
+        else:
+            self.values.move_to_end(key)
+        return v
+
+    def set(self, key: CacheKey, value: Optional[CacheValue]) -> None:
+        try:
+            del self.values[key]
+        except KeyError:
+            pass
+        if value is None:
+            return
+        self.values[key] = value
+        while len(self.values) > self.max_size:
+            self.values.popitem(last=False)

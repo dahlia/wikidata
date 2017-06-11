@@ -11,8 +11,15 @@ To be released.
   - :class:`~wikidata.client.Client` now has
     :attr:`~wikidata.client.Client.cache_policy` attribute and constructor
     option.  Nothing is cached by default.
+
   - Added :mod:`wikidata.cache` module and :class:`~wikidata.cache.CachePolicy`
-    interface in it.
+    interface in it.  Two built-in implementation of the interface were added:
+
+    :class:`~wikidata.cache.NullCachePolicy`
+       No-op.
+
+    :class:`~wikidata.cache.MemoryCachePolicy`
+       LRU cache in memory.
 
 
 Version 0.4.1
