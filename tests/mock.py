@@ -5,6 +5,7 @@ import json
 import logging
 import pathlib
 import socket
+import traceback
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -30,6 +31,7 @@ class FixtureOpener(urllib.request.OpenerDirector):
             urllib.parse.urljoin(base_url, './w/api.php')
         )
         # ./w/api.php?action=query&prop=imageinfo|info&inprop=url&iiprop=url|size|mime&format=json&titles={}  # noqa: E501
+        self.records = []
         cls = type(self)
         self.logger = logging.getLogger(cls.__qualname__) \
                              .getChild(cls.__name__)
@@ -47,6 +49,7 @@ class FixtureOpener(urllib.request.OpenerDirector):
         logger = self.logger.getChild('open')
         if not isinstance(fullurl, str):
             fullurl = fullurl.get_full_url()
+        self.records.append((fullurl, ''.join(traceback.format_stack())))
         parsed = urllib.parse.urlparse(fullurl)
         hdrs = http.client.HTTPMessage()
         # media fixtures
