@@ -6,6 +6,9 @@ Version 0.5.0
 
 To be released.
 
+- Added :mod:`wikidata.cache` module and :class:`~wikidata.cache.CachePolicy`
+  interface in it.
+
 
 Version 0.4.1
 '''''''''''''

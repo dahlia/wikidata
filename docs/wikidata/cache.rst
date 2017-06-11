@@ -1,0 +1,3 @@
+
+.. automodule:: wikidata.cache
+   :members:
