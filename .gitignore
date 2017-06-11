@@ -2,6 +2,7 @@
 *.pyc
 .*.swp
 .cache
+.mypy_cache
 .tox
 build
 dist

@@ -1,7 +1,14 @@
+import json
+from typing import TYPE_CHECKING, Optional
 import urllib.request
 
+from .mock import FixtureOpener
+from wikidata.cache import CacheKey, CachePolicy, CacheValue
 from wikidata.client import Client
 from wikidata.entity import Entity, EntityId, EntityType
+
+if TYPE_CHECKING:
+    from typing import Dict, Union  # noqa: F401
 
 
 def test_client_get(fx_client: Client):
@@ -44,6 +51,35 @@ def test_client_request(fx_client: Client):
     assert entity['title'] == 'Q1299'
     assert entity['type'] == 'item'
     assert entity['labels']['en'] == {'language': 'en', 'value': 'The Beatles'}
+
+
+class MockCachePolicy(CachePolicy):
+
+    def __init__(self) -> None:
+        self.store = {
+        }  # type: Dict[Union[CacheKey, str], Optional[CacheValue]]
+
+    def get(self, key: CacheKey) -> Optional[CacheValue]:
+        return self.store.get(key)
+
+    def set(self, key: CacheKey, value: Optional[CacheValue]) -> None:
+        self.store[key] = value
+
+
+def test_client_cache_policy(fx_client_opener: FixtureOpener):
+    mock = MockCachePolicy()
+    client1 = Client(opener=fx_client_opener, cache_policy=mock)
+    e1 = client1.get(EntityId('Q1299'), load=True)
+    assert len(fx_client_opener.records) == 1
+    url = 'https://www.wikidata.org/wiki/Special:EntityData/Q1299.json'
+    url_open = fx_client_opener.open
+    assert frozenset(mock.store) == {url}
+    assert mock.store[url] == json.loads(url_open(url).read().decode('utf-8'))
+    assert len(fx_client_opener.records) == 2
+    client2 = Client(opener=fx_client_opener, cache_policy=mock)
+    e2 = client2.get(EntityId('Q1299'), load=True)
+    assert e1.attributes == e2.attributes
+    assert len(fx_client_opener.records) == 2
 
 
 def test_client_repr():

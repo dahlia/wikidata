@@ -6,7 +6,7 @@
 """
 from typing import NewType, Optional
 
-__all__ = 'CacheKey', 'CachePolicy', 'CacheValue'
+__all__ = 'CacheKey', 'CachePolicy', 'CacheValue', 'NullCachePolicy'
 
 
 #: The type of keys to look up cached values.  Alias of :class:`str`.
@@ -47,3 +47,13 @@ class CachePolicy:
             'Concreate subclasses of {0.__module__}.{0.__qualname__} have to '
             'override .set() method'.format(CachePolicy)
         )
+
+
+class NullCachePolicy(CachePolicy):
+    """No-op cache policy."""
+
+    def get(self, key: CacheKey) -> Optional[CacheValue]:
+        return None
+
+    def set(self, key: CacheKey, value: Optional[CacheValue]) -> None:
+        pass

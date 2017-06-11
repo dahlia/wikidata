@@ -11,6 +11,7 @@ import urllib.parse
 import urllib.request
 import weakref
 
+from .cache import CacheKey, CachePolicy, NullCachePolicy
 from .entity import Entity, EntityId, EntityType
 
 if TYPE_CHECKING:
@@ -43,6 +44,12 @@ class Client:
                               :attr:`~.entity.Entity.id` for less HTTP
                               requests.  :const:`True` by default.
     :type entity_type_guess: :class:`bool`
+    :param cache_poliy: A caching policy for API calls.  No cache
+                        (:class:`~wikidata.cache.NullCachePolicy`) by default.
+    :type cache_policy: :class:`~wikidata.cache.CachePolicy`
+
+    .. versionadded:: 0.5.0
+       The ``cache_policy`` option.
 
     .. versionchanged:: 0.3.0
        The meaning of ``base_url`` parameter changed.  It originally meant
@@ -69,6 +76,11 @@ class Client:
     #: of :class:`~.decoder.Decoder` or its subclass.
     datavalue_decoder = None
 
+    #: (:class:`CachePolicy`) A caching policy for API calls.
+    #:
+    #: .. versionadded:: 0.5.0
+    cache_policy = NullCachePolicy()  # type: CachePolicy
+
     def __init__(self,
                  base_url: str=WIKIDATA_BASE_URL,
                  opener: Optional[urllib.request.OpenerDirector]=None,
@@ -78,6 +90,7 @@ class Client:
                                                    object],
                                           None]=None,
                  entity_type_guess: bool=True,
+                 cache_policy: CachePolicy=NullCachePolicy(),
                  repr_string: Optional[str]=None) -> None:
         if opener is None:
             if urllib.request._opener is None:  # type: ignore
@@ -95,6 +108,7 @@ class Client:
         self.opener = opener  # type: urllib.request.OpenerDirector
         self.datavalue_decoder = datavalue_decoder
         self.entity_type_guess = entity_type_guess
+        self.cache_policy = cache_policy  # type: CachePolicy
         self.identity_map = cast(MutableMapping[EntityId, Entity],
                                  weakref.WeakValueDictionary())
         self.repr_string = repr_string
@@ -171,10 +185,14 @@ class Client:
         Sequence[Union[bool, int, float, str, Mapping[str, object], Sequence]]
     ]:
         url = urllib.parse.urljoin(self.base_url, path)
-        response = self.opener.open(url)
-        buffer_ = io.TextIOWrapper(response, encoding='utf-8')  # type: ignore
-        result = json.load(buffer_)
-        return result
+        result = self.cache_policy.get(CacheKey(url))
+        if result is None:
+            response = self.opener.open(url)
+            buffer_ = io.TextIOWrapper(response,  # type: ignore
+                                       encoding='utf-8')
+            result = json.load(buffer_)
+            self.cache_policy.set(CacheKey(url), result)
+        return result  # type: ignore
 
     def __repr__(self) -> str:
         if self.repr_string is not None:
