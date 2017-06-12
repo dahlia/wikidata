@@ -8,6 +8,7 @@ import collections
 import hashlib
 import logging
 import pickle
+import re
 from typing import NewType, Optional
 
 __all__ = ('CacheKey', 'CachePolicy', 'CacheValue',
@@ -114,16 +115,29 @@ class ProxyCachePolicy(CachePolicy):
                          Read the above explanation.
     :param timeout: Lifespan of every cache in seconds.  0 means no expiration.
     :type timeout: :class:`int`
+    :param property_timeout: Lifespan of caches for properties (in seconds).
+                             Since properties don't change frequently or
+                             their changes usually don't make important effect,
+                             longer lifespan of properties' cache can be
+                             useful.  0 means no expiration.
+                             Set to the same as ``timeout`` by default.
+    :type property_timeout: :class:`int`
     :param namespace: The common prefix attached to every cache key.
                       ``'wd_'`` by default.
     :type namespace: :class:`str`
 
     """
 
+    PROPERTY_KEY_RE = re.compile(r'/P\d+\.json$')
+
     def __init__(self, cache_object, timeout: int,
+                 property_timeout: Optional[int]=None,
                  namespace: str='wd_') -> None:
         self.cache_object = cache_object
         self.timeout = timeout  # type: int
+        if property_timeout is None:
+            property_timeout = timeout
+        self.property_timeout = property_timeout  # type: int
         self.namespace = namespace  # type: str
 
     def encode_key(self, key: CacheKey) -> str:
@@ -132,6 +146,10 @@ class ProxyCachePolicy(CachePolicy):
             'Encoded from key %r: %r', key, k
         )
         return k
+
+    @classmethod
+    def is_property(cls, key: CacheKey) -> bool:
+        return bool(cls.PROPERTY_KEY_RE.search(key))
 
     def get(self, key: CacheKey) -> Optional[CacheValue]:
         k = self.encode_key(key)
@@ -146,4 +164,5 @@ class ProxyCachePolicy(CachePolicy):
             self.cache_object.delete(k)
             return
         v = pickle.dumps(value)
-        self.cache_object.set(k, v, self.timeout)
+        time = self.property_timeout if self.is_property(key) else self.timeout
+        self.cache_object.set(k, v, time)

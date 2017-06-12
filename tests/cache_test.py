@@ -41,7 +41,7 @@ class MockCache:
 
 def test_proxy_cache_policy():
     mock = MockCache()
-    proxy = ProxyCachePolicy(mock, 123, 'wd/')
+    proxy = ProxyCachePolicy(mock, 123, 456, 'wd/')
     assert proxy.get('foo') is None
     assert len(mock.records) == 1
     assert mock.records[0] == ('get', ['wd/acbd18db4cc2f85cedef654fccc4a4d8'])
@@ -58,3 +58,10 @@ def test_proxy_cache_policy():
     assert len(mock.records) == 4
     assert (mock.records[3] ==
             ('delete', ['wd/d85b1213473c2fd7c2045020a6b9c62b']))
+    proxy.set('https://www.wikidata.org/wiki/Special:EntityData/P18.json',
+              'foo')
+    assert len(mock.records) == 5
+    assert mock.records[4][0] == 'set'
+    assert mock.records[4][1][0] == 'wd/a071db2de830f9369edfcb773750ccc9'
+    assert pickle.loads(mock.records[4][1][1]) == 'foo'
+    assert mock.records[4][1][2] == 456
