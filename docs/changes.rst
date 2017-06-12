@@ -25,6 +25,9 @@ To be released.
        Proxy/adapter to another proxy object.  Useful for utilizing third-party
        cache libraries.
 
+  - ``wikidata.client.Client.request`` logger became to record logs about
+    cache hits as :const:`~logging.DEBUG` level.
+
 
 Version 0.4.1
 '''''''''''''

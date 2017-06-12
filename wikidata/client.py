@@ -4,6 +4,7 @@
 """
 import io
 import json
+import logging
 from typing import (TYPE_CHECKING,
                     Callable, Mapping, MutableMapping, Optional, Sequence,
                     Union, cast)
@@ -184,14 +185,18 @@ class Client:
         ],
         Sequence[Union[bool, int, float, str, Mapping[str, object], Sequence]]
     ]:
+        logger = logging.getLogger(__name__ + '.Client.request')
         url = urllib.parse.urljoin(self.base_url, path)
         result = self.cache_policy.get(CacheKey(url))
         if result is None:
+            logger.debug('%r: no cache; make a request...', url)
             response = self.opener.open(url)
             buffer_ = io.TextIOWrapper(response,  # type: ignore
                                        encoding='utf-8')
             result = json.load(buffer_)
             self.cache_policy.set(CacheKey(url), result)
+        else:
+            logger.debug('%r: cache hit', url)
         return result  # type: ignore
 
     def __repr__(self) -> str:
