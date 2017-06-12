@@ -4,7 +4,7 @@ Changelog
 Version 0.5.0
 '''''''''''''
 
-To be released.
+Released on June 13, 2017.
 
 - Wikidata API calls over network became possible to be cached.
 
