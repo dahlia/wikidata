@@ -4,7 +4,7 @@ Changelog
 Version 0.5.2
 '''''''''''''
 
-To be released.
+Released on June 28, 2017.
 
 - Fixed :exc:`AssertionError` from empty
   :class:`~wikidata.entities.multilingual_attribute`\ s.
