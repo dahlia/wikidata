@@ -144,13 +144,13 @@ class Entity(collections.abc.Mapping, collections.abc.Hashable):
         return hash((self.id, id(self.client)))
 
     def __len__(self) -> int:
-        claims_map = self.attributes.get('claims', {})
+        claims_map = self.attributes.get('claims') or {}
         assert isinstance(claims_map, collections.abc.Mapping)
         return len(claims_map)
 
     def __iter__(self) -> Iterator['Entity']:
         client = self.client
-        claims_map = self.attributes.get('claims', {})
+        claims_map = self.attributes.get('claims') or {}
         assert isinstance(claims_map, collections.abc.Mapping)
         for prop_id in claims_map:
             yield client.get(prop_id)

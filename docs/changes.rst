@@ -6,6 +6,9 @@ Version 0.4.2
 
 To be released.
 
+- Fixed :exc:`AssertionError` from :func:`len()` or iterating (:func:`iter()`)
+  on :class:`~wikidata.entities.Entity` objects with empty claims.
+
 
 Version 0.4.1
 '''''''''''''
