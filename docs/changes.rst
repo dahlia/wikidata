@@ -6,6 +6,9 @@ Version 0.5.1
 
 To be released.
 
+- Fixed :exc:`AssertionError` from :func:`len()` or iterating (:func:`iter()`)
+  on :class:`~wikidata.entities.Entity` objects with empty claims.
+
 
 Version 0.5.0
 '''''''''''''
@@ -33,6 +36,15 @@ Released on June 13, 2017.
 
   - ``wikidata.client.Client.request`` logger became to record logs about
     cache hits as :const:`~logging.DEBUG` level.
+
+
+Version 0.4.2
+'''''''''''''
+
+Released on June 28, 2017.
+
+- Fixed :exc:`AssertionError` from :func:`len()` or iterating (:func:`iter()`)
+  on :class:`~wikidata.entities.Entity` objects with empty claims.
 
 
 Version 0.4.1
