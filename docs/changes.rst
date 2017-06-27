@@ -6,6 +6,9 @@ Version 0.5.2
 
 To be released.
 
+- Fixed :exc:`AssertionError` from empty
+  :class:`~wikidata.entities.multilingual_attribute`\ s.
+
 
 Version 0.5.1
 '''''''''''''
@@ -42,6 +45,15 @@ Released on June 13, 2017.
 
   - ``wikidata.client.Client.request`` logger became to record logs about
     cache hits as :const:`~logging.DEBUG` level.
+
+
+Version 0.4.3
+'''''''''''''
+
+Released on June 28, 2017.
+
+- Fixed :exc:`AssertionError` from empty
+  :class:`~wikidata.entities.multilingual_attribute`\ s.
 
 
 Version 0.4.2

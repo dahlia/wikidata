@@ -42,7 +42,7 @@ class multilingual_attribute:
                     return Locale.parse(locale.replace('-', '_'))
                 except UnknownLocaleError:
                     return None
-            attr = obj.attributes.get(self.attribute, {})
+            attr = obj.attributes.get(self.attribute) or {}
             assert isinstance(attr, collections.abc.Mapping)
             pairs = (
                 (parse(item['language']), item['value'])
