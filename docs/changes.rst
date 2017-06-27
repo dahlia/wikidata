@@ -4,7 +4,7 @@ Changelog
 Version 0.4.2
 '''''''''''''
 
-To be released.
+Released on June 28, 2017.
 
 - Fixed :exc:`AssertionError` from :func:`len()` or iterating (:func:`iter()`)
   on :class:`~wikidata.entities.Entity` objects with empty claims.
