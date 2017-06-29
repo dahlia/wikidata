@@ -27,7 +27,7 @@ Version 0.5.2
 Released on June 28, 2017.
 
 - Fixed :exc:`AssertionError` from empty
-  :class:`~wikidata.entities.multilingual_attribute`\ s.
+  :class:`~wikidata.entity.multilingual_attribute`\ s.
 
 
 Version 0.5.1
@@ -36,7 +36,7 @@ Version 0.5.1
 Released on June 28, 2017.
 
 - Fixed :exc:`AssertionError` from :func:`len()` or iterating (:func:`iter()`)
-  on :class:`~wikidata.entities.Entity` objects with empty claims.
+  on :class:`~wikidata.entity.Entity` objects with empty claims.
 
 
 Version 0.5.0
@@ -90,7 +90,7 @@ Version 0.4.3
 Released on June 28, 2017.
 
 - Fixed :exc:`AssertionError` from empty
-  :class:`~wikidata.entities.multilingual_attribute`\ s.
+  :class:`~wikidata.entity.multilingual_attribute`\ s.
 
 
 Version 0.4.2
@@ -99,7 +99,7 @@ Version 0.4.2
 Released on June 28, 2017.
 
 - Fixed :exc:`AssertionError` from :func:`len()` or iterating (:func:`iter()`)
-  on :class:`~wikidata.entities.Entity` objects with empty claims.
+  on :class:`~wikidata.entity.Entity` objects with empty claims.
 
 
 Version 0.4.1
@@ -107,7 +107,7 @@ Version 0.4.1
 
 Released on April 30, 2017.
 
-- Fixed :exc:`AssertionError` from :meth:`~wikidata.entities.Entity.getlist()`
+- Fixed :exc:`AssertionError` from :meth:`~wikidata.entity.Entity.getlist()`
   on entities with empty claims.
 
 
