@@ -39,6 +39,7 @@ needs_sphinx = '1.3'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.intersphinx',
+    'sphinx.ext.extlinks',
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
 ]
@@ -352,7 +353,15 @@ texinfo_documents = [
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
-    'babe': ('http://babel.pocoo.org/en/latest/', None),
+    'babel': ('http://babel.pocoo.org/en/latest/', None),
     'python': ('https://docs.python.org/3/', None),
     'werkzeug': ('http://werkzeug.pocoo.org/docs/0.12/', None),
+}
+
+
+extlinks = {
+    'issue': ('https://github.com/dahlia/wikidata/issues/%s', '#'),
+    'pr': ('https://github.com/dahlia/wikidata/pull/%s', '#'),
+    'branch': ('https://github.com/dahlia/wikidata/compare/%s', ''),
+    'commit': ('https://github.com/dahlia/wikidata/commit/%s', '')
 }

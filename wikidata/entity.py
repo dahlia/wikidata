@@ -40,7 +40,7 @@ class multilingual_attribute:
             def parse(locale: str) -> Optional[Locale]:
                 try:
                     return Locale.parse(locale.replace('-', '_'))
-                except UnknownLocaleError:
+                except (ValueError, UnknownLocaleError):
                     return None
             attr = obj.attributes.get(self.attribute) or {}
             assert isinstance(attr, collections.abc.Mapping)
