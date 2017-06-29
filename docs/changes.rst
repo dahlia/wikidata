@@ -6,6 +6,20 @@ Version 0.4.4
 
 To be released.
 
+- Fixed :exc:`ValueError` from :attr:`Entity.label
+  <wikidata.entity.Entity.label>`/:attr:`Entity.description
+  <wikidata.entity.Entity.description>` with languages `ISO 639-1`_
+  doesn't cover (e.g. ``cbk-zam``).  [:issue:`2`]
+
+  Although this fix prevents these properties from raising :exc:`ValueError`,
+  it doesn't completely fix the problem.  :class:`babel.core.Locale` type,
+  which Wikidata depends on, currently doesn't supprot languages other
+  than `ISO 639-1`_.  In order to completely fix the problem, we need to
+  patch Babel_ to support them, or make Wikidata independent from Babel_.
+
+.. _ISO 639-1: https://www.iso.org/standard/22109.html
+.. _Babel: http://babel.pocoo.org/
+
 
 Version 0.4.3
 '''''''''''''

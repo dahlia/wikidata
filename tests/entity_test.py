@@ -53,6 +53,25 @@ def test_entity_description(fx_loaded_entity: Entity,
         '영국의 락 밴드'
 
 
+def test_entity_label_description_three_chars_lang_codes(fx_client: Client):
+    """As a short-term workaround, we currently ignore language codes
+    ISO 639-1 doesn't cover.
+
+    See also: https://github.com/dahlia/wikidata/issues/2
+
+    """
+    cbk_zam = fx_client.get(EntityId('Q33281'), load=True)
+    assert isinstance(cbk_zam.label, MultilingualText)
+    assert cbk_zam.label[Locale.parse('ko')] == '차바카노어'
+    assert 'cbk-zam' not in cbk_zam.label
+    assert 'cbk_zam' not in cbk_zam.label
+    assert isinstance(cbk_zam.description, MultilingualText)
+    assert cbk_zam.description[Locale.parse('en')] == \
+        'Spanish-based creole language spoken in the Philippines'
+    assert 'cbk-zam' not in cbk_zam.description
+    assert 'cbk_zam' not in cbk_zam.description
+
+
 def test_entity_type(fx_item: Entity,
                      fx_property: Entity,
                      fx_client_opener: urllib.request.OpenerDirector):
