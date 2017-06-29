@@ -4,7 +4,7 @@ Changelog
 Version 0.5.3
 '''''''''''''
 
-To be released.
+Released on June 30, 2017.
 
 - Fixed :exc:`ValueError` from :attr:`Entity.label
   <wikidata.entity.Entity.label>`/:attr:`Entity.description
