@@ -2,7 +2,7 @@ Wikidata_ client library for Python
 ===================================
 
 .. image:: https://badge.fury.io/py/Wikidata.svg
-   :target: https://pypi.python.org/pypi/Wikidata
+   :target: https://pypi.org/project/Wikidata/
    :alt: Latest PyPI version
 
 .. image:: https://readthedocs.org/projects/wikidata/badge/?version=latest
