@@ -69,6 +69,11 @@ def fx_loaded_entity(fx_client: Client) -> Entity:
 
 
 @fixture
+def fx_redirected_entity(fx_client: Client) -> Entity:
+    return fx_client.get(EntityId('Q16231742'))
+
+
+@fixture
 def fx_item(fx_loaded_entity: Entity) -> Entity:
     return fx_loaded_entity
 

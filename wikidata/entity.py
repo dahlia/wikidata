@@ -6,7 +6,8 @@ import collections.abc
 import enum
 import logging
 from typing import (TYPE_CHECKING, Iterator, Mapping, NewType,
-                    Optional, Sequence, Tuple, Union)
+                    Optional, Sequence, Tuple, Union,
+                    cast)
 
 from babel.core import Locale, UnknownLocaleError
 
@@ -239,9 +240,22 @@ class Entity(collections.abc.Mapping, collections.abc.Hashable):
         assert isinstance(result, collections.abc.Mapping)
         entities = result['entities']
         assert isinstance(entities, collections.abc.Mapping)
-        data = entities[self.id]
+        assert len(entities) == 1
+        redirected = False
+        entity_id = self.id
+        try:
+            data = entities[entity_id]
+        except KeyError:
+            entity_id = cast(EntityId, next(iter(entities)))
+            data = entities[entity_id]
+            redirected = True
         assert isinstance(data, collections.abc.Mapping)
         self.data = data
+        self.id = entity_id
+        if redirected:
+            canon = self.client.get(entity_id, load=False)
+            if canon.data is None:
+                canon.data = dict(data)
 
     def __repr__(self) -> str:
         if self.data:

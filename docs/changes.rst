@@ -6,6 +6,9 @@ Version 0.6.0
 
 To be released.
 
+- Fixed :exc:`KeyError` from :meth:`Client.get() <wikidata.client.Client.get>`
+  on an entity is redirected to its canonical entity.
+
 
 Version 0.5.3
 '''''''''''''

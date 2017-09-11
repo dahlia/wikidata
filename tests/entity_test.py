@@ -153,6 +153,15 @@ def test_entity_load(fx_unloaded_entity: Entity):
         assert fx_unloaded_entity.data == json.load(f)['entities']['Q1299']
 
 
+def test_entity_load_redirected_entity(fx_client: Client,
+                                       fx_redirected_entity: Entity):
+    canonical_id = EntityId('Q3571994')
+    alternate_id = EntityId('Q16231742')
+    assert fx_redirected_entity.id == alternate_id
+    fx_redirected_entity.load()
+    assert fx_redirected_entity.id == canonical_id
+
+
 def test_entity_repr(fx_unloaded_entity: Entity,
                      fx_loaded_entity: Entity):
     assert repr(fx_unloaded_entity) == '<wikidata.entity.Entity Q1299>'
