@@ -6,6 +6,9 @@ Version 0.6.1
 
 To be released.
 
+- Fixed :exc:`ImportError` on Python 3.4 due to lack of :mod:`typing` module.
+  [:issue:`4`]
+
 
 Version 0.6.0
 '''''''''''''
@@ -14,6 +17,15 @@ Released on September 12, 2017.
 
 - Fixed :exc:`KeyError` from :meth:`Client.get() <wikidata.client.Client.get>`
   on an entity is redirected to its canonical entity.
+
+
+Version 0.5.4
+'''''''''''''
+
+Released on September 18, 2017.
+
+- Fixed :exc:`ImportError` on Python 3.4 due to lack of :mod:`typing` module.
+  [:issue:`4`]
 
 
 Version 0.5.3
