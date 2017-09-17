@@ -6,6 +6,9 @@ Version 0.5.4
 
 To be released.
 
+- Fixed :exc:`ImportError` on Python 3.4 due to lack of :mod:`typing` module.
+  [:issue:`4`]
+
 
 Version 0.5.3
 '''''''''''''

@@ -47,6 +47,7 @@ setup(
     packages=find_packages(exclude=['docs', 'tests']),
     python_requires='>=3.4.0',
     install_requires=['Babel >= 2.0'],
+    extras_require={':python_version<"3.5"': ['typing']},
     keywords='wikidata ontology',
     classifiers=[
         'Development Status :: 4 - Beta',
