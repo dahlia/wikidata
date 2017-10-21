@@ -55,6 +55,8 @@ setup(
         'Intended Audience :: Information Technology',
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',  # noqa: E501
         'Operating System :: OS Independent',
+        # CHECK If you're going to change the list of supported Python versions
+        # update .travis.yml and tox.ini as well.
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
