@@ -178,14 +178,14 @@ class Client:
                       self.datavalue_decoder)
         return decode(self, datatype, datavalue)
 
-    def request(self, path: str) -> Union[
+    def request(self, path: str) -> Optional[Union[
         bool, int, float, str,
         Mapping[
             str,
             Union[bool, int, float, str, Mapping[str, object], Sequence]
         ],
         Sequence[Union[bool, int, float, str, Mapping[str, object], Sequence]]
-    ]:
+    ]]:
         logger = logging.getLogger(__name__ + '.Client.request')
         url = urllib.parse.urljoin(self.base_url, path)
         result = self.cache_policy.get(CacheKey(url))
