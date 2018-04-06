@@ -237,25 +237,28 @@ class Entity(collections.abc.Mapping, collections.abc.Hashable):
     def load(self) -> None:
         url = './wiki/Special:EntityData/{}.json'.format(self.id)
         result = self.client.request(url)
-        assert isinstance(result, collections.abc.Mapping)
-        entities = result['entities']
-        assert isinstance(entities, collections.abc.Mapping)
-        assert len(entities) == 1
-        redirected = False
-        entity_id = self.id
-        try:
-            data = entities[entity_id]
-        except KeyError:
-            entity_id = cast(EntityId, next(iter(entities)))
-            data = entities[entity_id]
-            redirected = True
-        assert isinstance(data, collections.abc.Mapping)
-        self.data = data
-        self.id = entity_id
-        if redirected:
-            canon = self.client.get(entity_id, load=False)
-            if canon.data is None:
-                canon.data = dict(data)
+        if result is not None:
+            assert isinstance(result, collections.abc.Mapping)
+            entities = result['entities']
+            assert isinstance(entities, collections.abc.Mapping)
+            assert len(entities) == 1
+            redirected = False
+            entity_id = self.id
+            try:
+                data = entities[entity_id]
+            except KeyError:
+                entity_id = cast(EntityId, next(iter(entities)))
+                data = entities[entity_id]
+                redirected = True
+            assert isinstance(data, collections.abc.Mapping)
+            self.data = data
+            self.id = entity_id
+            if redirected:
+                canon = self.client.get(entity_id, load=False)
+                if canon.data is None:
+                    canon.data = dict(data)
+        else:
+            self.data = None
 
     def __repr__(self) -> str:
         if self.data:

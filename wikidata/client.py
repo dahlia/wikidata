@@ -10,6 +10,7 @@ from typing import (TYPE_CHECKING,
                     Union, cast)
 import urllib.parse
 import urllib.request
+from urllib.error import URLError, HTTPError
 import weakref
 
 from .cache import CacheKey, CachePolicy, NullCachePolicy
@@ -190,7 +191,15 @@ class Client:
         result = self.cache_policy.get(CacheKey(url))
         if result is None:
             logger.debug('%r: no cache; make a request...', url)
-            response = self.opener.open(url)
+            try:
+                response = self.opener.open(url)
+            except HTTPError as e:
+                logger.debug('HTTP error code: ', e.code)
+                return None
+            except URLError as e:
+                logger.debug('Failed to reach server: ', e.reason)
+                return None
+                
             buffer_ = io.TextIOWrapper(response,  # type: ignore
                                        encoding='utf-8')
             result = json.load(buffer_)
