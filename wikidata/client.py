@@ -8,9 +8,9 @@ import logging
 from typing import (TYPE_CHECKING,
                     Callable, Mapping, MutableMapping, Optional, Sequence,
                     Union, cast)
+import urllib.error
 import urllib.parse
 import urllib.request
-import urllib.error
 import weakref
 
 from .cache import CacheKey, CachePolicy, NullCachePolicy
