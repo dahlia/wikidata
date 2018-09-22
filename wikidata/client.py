@@ -191,8 +191,7 @@ class Client:
         if result is None:
             logger.debug('%r: no cache; make a request...', url)
             response = self.opener.open(url)
-            buffer_ = io.TextIOWrapper(response,  # type: ignore
-                                       encoding='utf-8')
+            buffer_ = io.TextIOWrapper(response, encoding='utf-8')
             result = json.load(buffer_)
             self.cache_policy.set(CacheKey(url), result)
         else:
