@@ -6,6 +6,8 @@ Version 0.7.0
 
 To be released.
 
+- Marked the package as supporting type checking by following :pep:`561`.
+
 
 Version 0.6.1
 -------------
