@@ -1,8 +1,14 @@
 Changelog
 =========
 
+Version 0.7.0
+-------------
+
+To be released.
+
+
 Version 0.6.1
-'''''''''''''
+-------------
 
 Released on September 18, 2017.
 
@@ -11,7 +17,7 @@ Released on September 18, 2017.
 
 
 Version 0.6.0
-'''''''''''''
+-------------
 
 Released on September 12, 2017.
 
@@ -20,7 +26,7 @@ Released on September 12, 2017.
 
 
 Version 0.5.4
-'''''''''''''
+-------------
 
 Released on September 18, 2017.
 
@@ -29,7 +35,7 @@ Released on September 18, 2017.
 
 
 Version 0.5.3
-'''''''''''''
+-------------
 
 Released on June 30, 2017.
 
@@ -49,7 +55,7 @@ Released on June 30, 2017.
 
 
 Version 0.5.2
-'''''''''''''
+-------------
 
 Released on June 28, 2017.
 
@@ -58,7 +64,7 @@ Released on June 28, 2017.
 
 
 Version 0.5.1
-'''''''''''''
+-------------
 
 Released on June 28, 2017.
 
@@ -67,7 +73,7 @@ Released on June 28, 2017.
 
 
 Version 0.5.0
-'''''''''''''
+-------------
 
 Released on June 13, 2017.
 
@@ -95,7 +101,7 @@ Released on June 13, 2017.
 
 
 Version 0.4.4
-'''''''''''''
+-------------
 
 Released on June 30, 2017.
 
@@ -112,7 +118,7 @@ Released on June 30, 2017.
 
 
 Version 0.4.3
-'''''''''''''
+-------------
 
 Released on June 28, 2017.
 
@@ -121,7 +127,7 @@ Released on June 28, 2017.
 
 
 Version 0.4.2
-'''''''''''''
+-------------
 
 Released on June 28, 2017.
 
@@ -130,7 +136,7 @@ Released on June 28, 2017.
 
 
 Version 0.4.1
-'''''''''''''
+-------------
 
 Released on April 30, 2017.
 
@@ -139,7 +145,7 @@ Released on April 30, 2017.
 
 
 Version 0.4.0
-'''''''''''''
+-------------
 
 Released on April 24, 2017.
 
@@ -150,7 +156,7 @@ Released on April 24, 2017.
 
 
 Version 0.3.0
-'''''''''''''
+-------------
 
 Released on February 23, 2017.
 
@@ -179,7 +185,7 @@ Released on February 23, 2017.
 
 
 Version 0.2.0
-'''''''''''''
+-------------
 
 Released on February 19, 2017.
 
@@ -196,6 +202,6 @@ Released on February 19, 2017.
 
 
 Version 0.1.0
-'''''''''''''
+-------------
 
 Initial version.  Released on February 15, 2017.
