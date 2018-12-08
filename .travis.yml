@@ -18,6 +18,12 @@ script:
 python:
 # CHECK If you're going to change the list of supported Python versions
 # update tox.ini and setup.py's classifiers as well.
+- pypy3.5
 - 3.4
 - 3.5
 - 3.6
+matrix:
+  include:
+  - python: 3.7
+    dist: xenial
+    sudo: true

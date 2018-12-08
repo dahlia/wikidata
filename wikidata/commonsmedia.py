@@ -6,7 +6,7 @@
 .. versionadded:: 0.3.0
 
 """
-import collections
+import collections.abc
 from typing import Mapping, Optional, Tuple, cast
 import urllib.parse
 
@@ -93,7 +93,7 @@ class File:
             raise FileError('the server respond an error: ' +
                             repr(result['error']))
         query = result['query']
-        assert isinstance(query, collections.Mapping)
+        assert isinstance(query, collections.abc.Mapping)
         _, self.data = query['pages'].popitem()
 
     def __repr__(self) -> str:
