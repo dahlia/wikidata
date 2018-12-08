@@ -101,7 +101,7 @@ class EntityType(enum.Enum):
 
 
 class Entity(collections.abc.Mapping, collections.abc.Hashable):
-    """Wikidata entity.  Can be an item or a property.  Its attrributes
+    r"""Wikidata entity.  Can be an item or a property.  Its attrributes
     can be lazily loaded.
 
     To get an entity use :meth:`Client.get() <wikidata.client.Client.get>`
@@ -163,7 +163,7 @@ class Entity(collections.abc.Mapping, collections.abc.Hashable):
         raise KeyError(key)
 
     def getlist(self, key: 'Entity') -> Sequence[object]:
-        """Return all values associated to the given ``key`` property
+        r"""Return all values associated to the given ``key`` property
         in sequence.
 
         :param key: The property entity.
@@ -199,8 +199,8 @@ class Entity(collections.abc.Mapping, collections.abc.Hashable):
         each list of values instead of each single value.
 
         :return: The pairs of (key, values) where values is a sequence.
-        :rtype: :class:`~typing.Sequence`\ [:class:`~typing.Tuple`\ \
-[:class:`Entity`, :class:`~typing.Sequence`\ [:class:`object`]]]
+        :rtype: :class:`~typing.Sequence`\\ [:class:`~typing.Tuple`\\ \
+[:class:`Entity`, :class:`~typing.Sequence`\\ [:class:`object`]]]
 
         """
         return list(self.iterlists())

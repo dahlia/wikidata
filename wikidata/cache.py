@@ -26,7 +26,7 @@ class CachePolicy:
     """Interface for caching policies."""
 
     def get(self, key: CacheKey) -> Optional[CacheValue]:
-        """Look up a cached value by its ``key``.
+        r"""Look up a cached value by its ``key``.
 
         :param key: The key string to look up a cached value.
         :type key: :const:`CacheKey`
@@ -41,7 +41,7 @@ class CachePolicy:
         )
 
     def set(self, key: CacheKey, value: Optional[CacheValue]) -> None:
-        """Create or update a cache.
+        r"""Create or update a cache.
 
         :param key: A key string to create or update.
         :type key: :const:`CacheKey`
@@ -73,7 +73,7 @@ class MemoryCachePolicy(CachePolicy):
 
     """
 
-    def __init__(self, max_size: int=128) -> None:
+    def __init__(self, max_size: int = 128) -> None:
         self.max_size = max_size  # type: int
         self.values = \
             collections.OrderedDict()  # type: collections.OrderedDict
@@ -131,8 +131,8 @@ class ProxyCachePolicy(CachePolicy):
     PROPERTY_KEY_RE = re.compile(r'/P\d+\.json$')
 
     def __init__(self, cache_object, timeout: int,
-                 property_timeout: Optional[int]=None,
-                 namespace: str='wd_') -> None:
+                 property_timeout: Optional[int] = None,
+                 namespace: str = 'wd_') -> None:
         self.cache_object = cache_object
         self.timeout = timeout  # type: int
         if property_timeout is None:

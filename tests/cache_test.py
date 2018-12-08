@@ -32,7 +32,7 @@ class MockCache:
             return pickle.dumps('cached value')
         return None
 
-    def set(self, key: str, value: bytes, timeout: int=0) -> None:
+    def set(self, key: str, value: bytes, timeout: int = 0) -> None:
         self.records.append(('set', [key, value, timeout]))
 
     def delete(self, key: str) -> None:
