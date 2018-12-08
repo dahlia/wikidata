@@ -14,7 +14,7 @@ script:
   [[ "$TRAVIS_PYTHON_VERSION" != "3.6" ]] || \
     ~/bin/checkmate github-travis --token "$GITHUB_ACCESS_TOKEN"
 - tox
-- tox -e mypy
+- '[[ "$TRAVIS_PYTHON_VERSION" = "pypy3.5" ]] || tox -e mypy'
 python:
 # CHECK If you're going to change the list of supported Python versions
 # update tox.ini and setup.py's classifiers as well.
