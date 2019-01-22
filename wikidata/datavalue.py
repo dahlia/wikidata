@@ -33,8 +33,8 @@ class DatavalueError(ValueError):
 
     """
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, *args):
+        super().__init__(*args)
         if len(self.args) < 2:
             raise TypeError('expected datavalue from 2nd positional argument')
 
