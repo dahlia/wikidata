@@ -142,7 +142,7 @@ def test_decoder_monolingualtext(fx_client: Client):
             'language': 'ko',
             'text': '윤동주',
         },
-    }) == MonolingualText('윤동주', 'ko')  # type: ignore
+    }) == MonolingualText('윤동주', 'ko')
 
 
 def test_decoder_commonsMedia__string(fx_client: Client):

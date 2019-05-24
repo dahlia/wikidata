@@ -101,7 +101,7 @@ class EntityType(enum.Enum):
 
 
 class Entity(collections.abc.Mapping, collections.abc.Hashable):
-    """Wikidata entity.  Can be an item or a property.  Its attrributes
+    r"""Wikidata entity.  Can be an item or a property.  Its attrributes
     can be lazily loaded.
 
     To get an entity use :meth:`Client.get() <wikidata.client.Client.get>`
@@ -163,7 +163,7 @@ class Entity(collections.abc.Mapping, collections.abc.Hashable):
         raise KeyError(key)
 
     def getlist(self, key: 'Entity') -> Sequence[object]:
-        """Return all values associated to the given ``key`` property
+        r"""Return all values associated to the given ``key`` property
         in sequence.
 
         :param key: The property entity.
@@ -199,8 +199,8 @@ class Entity(collections.abc.Mapping, collections.abc.Hashable):
         each list of values instead of each single value.
 
         :return: The pairs of (key, values) where values is a sequence.
-        :rtype: :class:`~typing.Sequence`\ [:class:`~typing.Tuple`\ \
-[:class:`Entity`, :class:`~typing.Sequence`\ [:class:`object`]]]
+        :rtype: :class:`~typing.Sequence`\\ [:class:`~typing.Tuple`\\ \
+[:class:`Entity`, :class:`~typing.Sequence`\\ [:class:`object`]]]
 
         """
         return list(self.iterlists())
@@ -237,28 +237,29 @@ class Entity(collections.abc.Mapping, collections.abc.Hashable):
     def load(self) -> None:
         url = './wiki/Special:EntityData/{}.json'.format(self.id)
         result = self.client.request(url)
-        if result is not None:
-            assert isinstance(result, collections.abc.Mapping)
-            entities = result['entities']
-            assert isinstance(entities, collections.abc.Mapping)
-            assert len(entities) == 1
-            redirected = False
-            entity_id = self.id
-            try:
-                data = entities[entity_id]
-            except KeyError:
-                entity_id = cast(EntityId, next(iter(entities)))
-                data = entities[entity_id]
-                redirected = True
-            assert isinstance(data, collections.abc.Mapping)
-            self.data = data
-            self.id = entity_id
-            if redirected:
-                canon = self.client.get(entity_id, load=False)
-                if canon.data is None:
-                    canon.data = dict(data)
-        else:
+        if result is None:
             self.data = None
+            return
+
+        assert isinstance(result, collections.abc.Mapping)
+        entities = result['entities']
+        assert isinstance(entities, collections.abc.Mapping)
+        assert len(entities) == 1
+        redirected = False
+        entity_id = self.id
+        try:
+            data = entities[entity_id]
+        except KeyError:
+            entity_id = cast(EntityId, next(iter(entities)))
+            data = entities[entity_id]
+            redirected = True
+        assert isinstance(data, collections.abc.Mapping)
+        self.data = data
+        self.id = entity_id
+        if redirected:
+            canon = self.client.get(entity_id, load=False)
+            if canon.data is None:
+                canon.data = dict(data)
 
     def __repr__(self) -> str:
         if self.data:

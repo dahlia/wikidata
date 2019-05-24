@@ -84,16 +84,16 @@ class Client:
     cache_policy = NullCachePolicy()  # type: CachePolicy
 
     def __init__(self,
-                 base_url: str=WIKIDATA_BASE_URL,
-                 opener: Optional[urllib.request.OpenerDirector]=None,
+                 base_url: str = WIKIDATA_BASE_URL,
+                 opener: Optional[urllib.request.OpenerDirector] = None,
                  datavalue_decoder: Union['Decoder',
                                           Callable[['Client', str,
                                                    Mapping[str, object]],
                                                    object],
-                                          None]=None,
-                 entity_type_guess: bool=True,
-                 cache_policy: CachePolicy=NullCachePolicy(),
-                 repr_string: Optional[str]=None) -> None:
+                                          None] = None,
+                 entity_type_guess: bool = True,
+                 cache_policy: CachePolicy = NullCachePolicy(),
+                 repr_string: Optional[str] = None) -> None:
         if opener is None:
             if urllib.request._opener is None:  # type: ignore
                 try:
@@ -115,7 +115,7 @@ class Client:
                                  weakref.WeakValueDictionary())
         self.repr_string = repr_string
 
-    def get(self, entity_id: EntityId, load: bool=False) -> Entity:
+    def get(self, entity_id: EntityId, load: bool = False) -> Entity:
         """Get a Wikidata entity by its :class:`~.entity.EntityId`.
 
         :param entity_id: The :attr:`~.entity.Entity.id` of
@@ -141,7 +141,7 @@ class Client:
         return entity
 
     def guess_entity_type(self, entity_id: EntityId) -> Optional[EntityType]:
-        """Guess :class:`~.entity.EntityType` from the given
+        r"""Guess :class:`~.entity.EntityType` from the given
         :class:`~.entity.EntityId`.  It could return :const:`None` when it
         fails to guess.
 
@@ -194,10 +194,10 @@ class Client:
             try:
                 response = self.opener.open(url)
             except urllib.error.HTTPError as e:
-                logger.debug('HTTP error code: ', e.code)
+                logger.debug('HTTP error code: ', e.code, exc_info=True)
                 return None
             except urllib.error.URLError as e:
-                logger.debug('Failed to reach server: ', e.reason)
+                logger.debug('Failed to reach server: ', e.reason, exc_info=True)
                 return None
 
             buffer_ = io.TextIOWrapper(response,  # type: ignore

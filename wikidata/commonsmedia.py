@@ -6,7 +6,7 @@
 .. versionadded:: 0.3.0
 
 """
-import collections
+import collections.abc
 from typing import Mapping, Optional, Tuple, cast
 import urllib.parse
 
@@ -34,7 +34,7 @@ class File:
 
     @property
     def image_url(self) -> Optional[str]:
-        """(:class:`~typing.Optional`\ [:class:`str`]) The image url.
+        r"""(:class:`~typing.Optional`\ [:class:`str`]) The image url.
         It may be :const:`None` if it's not an image.
 
         """
@@ -45,7 +45,7 @@ class File:
 
     @property
     def image_mimetype(self) -> Optional[str]:
-        """(:class:`~typing.Optional`\ [:class:`str`]) The MIME type of
+        r"""(:class:`~typing.Optional`\ [:class:`str`]) The MIME type of
         the image.  It may be :const:`None` if it's not an image.
 
         """
@@ -56,7 +56,7 @@ class File:
 
     @property
     def image_resolution(self) -> Optional[Tuple[int, int]]:
-        """(:class:`~typing.Optional`\ [:class:`~typing.Tuple`\ [:class:`int`,
+        r"""(:class:`~typing.Optional`\ [:class:`~typing.Tuple`\ [:class:`int`,
         :class:`int`]]) The (width, height) pair of the image.
         It may be :const:`None` if it's not an image.
 
@@ -69,7 +69,7 @@ class File:
 
     @property
     def image_size(self) -> Optional[int]:
-        """(:class:`~typing.Optional`\ [:class:`int`]) The size of the image
+        r"""(:class:`~typing.Optional`\ [:class:`int`]) The size of the image
         in bytes.  It may be :const:`None` if it's not an image.
 
         """
@@ -93,7 +93,7 @@ class File:
             raise FileError('the server respond an error: ' +
                             repr(result['error']))
         query = result['query']
-        assert isinstance(query, collections.Mapping)
+        assert isinstance(query, collections.abc.Mapping)
         _, self.data = query['pages'].popitem()
 
     def __repr__(self) -> str:
