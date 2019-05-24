@@ -19,6 +19,8 @@ def test_client_get(fx_client: Client):
     entity2 = fx_client.get(EntityId('Q1299'), load=True)
     assert entity2.data is not None
     assert entity2 is entity
+    entity3 = fx_client.get(EntityId('1299'), load=True) # http 400 error
+    assert entity3.data is None
 
 
 def test_client_guess_entity_type(
