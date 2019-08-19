@@ -188,7 +188,8 @@ class Entity(collections.abc.Mapping, collections.abc.Hashable):
                          __import__('pprint').pformat(claims))
         decode = self.client.decode_datavalue
         return [decode(snak['datatype'], snak['datavalue'])
-                for snak in (claim['mainsnak'] for claim in claims)]
+                for snak in (claim['mainsnak'] for claim in claims)
+                if snak['snaktype'] == 'value']
 
     def iterlists(self) -> Iterator[Tuple['Entity', Sequence[object]]]:
         for prop in self:
