@@ -7,6 +7,9 @@ Version 0.7.0
 To be released.
 
 - Marked the package as supporting type checking by following :pep:`561`.
+- Fixed :exc:`KeyError` from :meth:`Entity.getlist()
+  <wikidata.entity.Entity.getlist>` if the property is explictly associated
+  with "no value". [:issue:`18`]
 
 
 Version 0.6.1
