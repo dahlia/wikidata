@@ -12,6 +12,7 @@ install:
 script:
 - |
   [[ "$TRAVIS_PYTHON_VERSION" != "3.6" ]] || \
+    [[ "$GITHUB_ACCESS_TOKEN" = "" ]] || \
     ~/bin/checkmate github-travis --token "$GITHUB_ACCESS_TOKEN"
 - tox
 - '[[ "$TRAVIS_PYTHON_VERSION" = "pypy3.5" ]] || tox -e mypy'
