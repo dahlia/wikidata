@@ -167,3 +167,10 @@ def test_entity_repr(fx_unloaded_entity: Entity,
     assert repr(fx_unloaded_entity) == '<wikidata.entity.Entity Q1299>'
     assert repr(fx_loaded_entity) == \
         "<wikidata.entity.Entity Q494290 'Shin Jung-hyeon'>"
+
+
+def test_entity_getlist_novalue(fx_client: Client):
+    hong_kong = fx_client.get(EntityId('Q8646'))
+    locator_map_image = fx_client.get(EntityId('P242'))
+    # There are 3 snaks for this property, but one has no associated value
+    assert len(hong_kong.getlist(locator_map_image)) == 2
