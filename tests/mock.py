@@ -40,11 +40,16 @@ class FixtureOpener(urllib.request.OpenerDirector):
     @staticmethod
     def match_netloc(a: urllib.parse.ParseResult,
                      b: urllib.parse.ParseResult) -> bool:
-        return (a.scheme.lower() == b.scheme.lower() and
-                a.username == b.username and
-                a.password == b.password and
-                a.hostname.lower() == b.hostname.lower() and
-                a.port == b.port)
+        return (
+            a.scheme.lower() == b.scheme.lower() and
+            a.username == b.username and
+            a.password == b.password and
+            a.port == b.port and (
+                a.hostname.lower() == b.hostname.lower()
+                if a.hostname is not None and b.hostname is not None
+                else a.hostname is b.hostname
+            )
+        )
 
     def open(self, fullurl, data=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
         logger = self.logger.getChild('open')
