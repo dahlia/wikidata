@@ -15,7 +15,7 @@ class MultilingualText(collections.abc.Mapping):
     __slots__ = 'texts',
 
     def __init__(self, texts: Mapping[Union[Locale, str], str]) -> None:
-        self.texts = {normalize_locale_code(l): t for l, t in texts.items()}
+        self.texts = {normalize_locale_code(lc): t for lc, t in texts.items()}
 
     def __iter__(self) -> Iterator[Locale]:
         for locale_code in self.texts:
