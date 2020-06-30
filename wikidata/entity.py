@@ -55,6 +55,14 @@ class multilingual_attribute:
         return value
 
 
+class EntityState(enum.Enum):
+    """Define state of entity."""
+
+    not_loaded = 'not_loaded'
+    loaded = 'loaded'
+    non_existent = 'non_existent'
+
+
 class EntityType(enum.Enum):
     """The enumerated type which consists of two possible values:
 
@@ -133,6 +141,7 @@ class Entity(collections.abc.Mapping, collections.abc.Hashable):
         self.id = id
         self.client = client
         self.data = None  # type: Optional[Mapping[str, object]]
+        self.state = EntityState.not_loaded
 
     def __eq__(self, other) -> bool:
         if not isinstance(other, type(self)):
@@ -240,9 +249,10 @@ class Entity(collections.abc.Mapping, collections.abc.Hashable):
         result = self.client.request(url)
         if result is None:
             self.data = None  # Not loaded yet
+            self.state = EntityState.not_loaded
             return
         elif result == 'Non-Existent':
-            self.data = {}
+            self.state = EntityState.non_existent
             return
 
         assert isinstance(result, collections.abc.Mapping)
@@ -260,6 +270,7 @@ class Entity(collections.abc.Mapping, collections.abc.Hashable):
         assert isinstance(data, collections.abc.Mapping)
         self.data = data
         self.id = entity_id
+        self.state = EntityState.loaded
         if redirected:
             canon = self.client.get(entity_id, load=False)
             if canon.data is None:

@@ -88,7 +88,7 @@ class Client:
                  opener: Optional[urllib.request.OpenerDirector] = None,
                  datavalue_decoder: Union['Decoder',
                                           Callable[['Client', str,
-                                                    Mapping[str, object]],
+                                                   Mapping[str, object]],
                                                    object],
                                           None] = None,
                  entity_type_guess: bool = True,
@@ -183,7 +183,6 @@ class Client:
         Mapping[str, Union[bool, int, float, str,
                            Mapping[str, object], Sequence]],
         Sequence[Union[bool, int, float, str, Mapping[str, object], Sequence]],
-        None
     ]:
         logger = logging.getLogger(__name__ + '.Client.request')
         url = urllib.parse.urljoin(self.base_url, path)
@@ -194,8 +193,7 @@ class Client:
                 response = self.opener.open(url)
             except urllib.error.HTTPError as e:
                 logger.debug('HTTP error code: %s', e.code, exc_info=True)
-                response = e.fp.read().decode('utf-8')  # type: ignore
-                if 'Invalid ID' in response:
+                if e.code == 400 and b'Invalid ID' in e.read():
                     return 'Non-Existent'
                 else:
                     raise e

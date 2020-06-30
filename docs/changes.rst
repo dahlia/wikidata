@@ -10,7 +10,7 @@ To be released.
 - Fixed :exc:`KeyError` from :meth:`Entity.getlist()
   <wikidata.entity.Entity.getlist>` if the property is explictly associated
   with "no value". [:issue:`18`]
-- Better handling of non-existent entities
+- Added Enum to handle non-existent entities
 
 
 Version 0.6.1
