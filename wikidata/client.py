@@ -194,13 +194,13 @@ class Client:
                 response = self.opener.open(url)
             except urllib.error.HTTPError as e:
                 logger.debug('HTTP error code: %s', e.code, exc_info=True)
-                response = e.fp.read().decode('utf-8')
+                response = e.fp.read().decode('utf-8')  # type: ignore
                 if 'Invalid ID' in response:
                     return 'Non-Existent'
                 else:
                     raise e
 
-            buffer_ = io.TextIOWrapper(response,  # type: ignore
+            buffer_ = io.TextIOWrapper(response,
                                        encoding='utf-8')
             result = json.load(buffer_)
             self.cache_policy.set(CacheKey(url), result)
