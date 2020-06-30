@@ -239,7 +239,10 @@ class Entity(collections.abc.Mapping, collections.abc.Hashable):
         url = './wiki/Special:EntityData/{}.json'.format(self.id)
         result = self.client.request(url)
         if result is None:
-            self.data = None
+            self.data = None  # Not loaded yet
+            return
+        elif result == 'Non-Existent':
+            self.data = {}
             return
 
         assert isinstance(result, collections.abc.Mapping)
