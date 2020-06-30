@@ -10,8 +10,11 @@ To be released.
 - Fixed :exc:`KeyError` from :meth:`Entity.getlist()
   <wikidata.entity.Entity.getlist>` if the property is explictly associated
   with "no value". [:issue:`18`]
-- Added Enum to handle non-existent entities
-
+- Added :class:`~wikidata.entity.EntityState` enum class.  [:pr:`11`]
+- Added :attr:`Entity.state <wikidata.entity.Entity.state>` attribute.
+  [:pr:`11`]
+- Fixed a bug that raised :exc:`~urllib.error.HTTPError` when
+  non-existent `Entity` was requested.  [:pr:`11`]
 
 Version 0.6.1
 -------------

@@ -19,7 +19,7 @@ from .entity import Entity, EntityId, EntityType
 if TYPE_CHECKING:
     from .datavalue import Decoder  # noqa: F401
 
-__all__ = 'WIKIDATA_BASE_URL', 'Client'
+__all__ = ['WIKIDATA_BASE_URL', 'Client']
 
 
 #: (:class:`str`) The default ``base_url`` of :class:`Client` constructor.
@@ -183,6 +183,7 @@ class Client:
         Mapping[str, Union[bool, int, float, str,
                            Mapping[str, object], Sequence]],
         Sequence[Union[bool, int, float, str, Mapping[str, object], Sequence]],
+        None
     ]:
         logger = logging.getLogger(__name__ + '.Client.request')
         url = urllib.parse.urljoin(self.base_url, path)
@@ -194,7 +195,7 @@ class Client:
             except urllib.error.HTTPError as e:
                 logger.debug('HTTP error code: %s', e.code, exc_info=True)
                 if e.code == 400 and b'Invalid ID' in e.read():
-                    return 'Non-Existent'
+                    return None
                 else:
                     raise e
 

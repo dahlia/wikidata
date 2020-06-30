@@ -11,8 +11,8 @@ import pickle
 import re
 from typing import NewType, Optional
 
-__all__ = ('CacheKey', 'CachePolicy', 'CacheValue',
-           'MemoryCachePolicy', 'NullCachePolicy', 'ProxyCachePolicy')
+__all__ = ['CacheKey', 'CachePolicy', 'CacheValue',
+           'MemoryCachePolicy', 'NullCachePolicy', 'ProxyCachePolicy']
 
 
 #: The type of keys to look up cached values.  Alias of :class:`str`.

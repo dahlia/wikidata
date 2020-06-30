@@ -24,7 +24,7 @@ from .multilingual import MonolingualText
 if TYPE_CHECKING:
     from .entity import Entity  # noqa: F401
 
-__all__ = 'DatavalueError', 'Decoder'
+__all__ = ['DatavalueError', 'Decoder']
 
 
 class DatavalueError(ValueError):

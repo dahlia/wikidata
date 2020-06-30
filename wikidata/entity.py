@@ -17,7 +17,7 @@ from .multilingual import MultilingualText
 if TYPE_CHECKING:
     from .client import Client  # noqa: F401
 
-__all__ = 'Entity', 'EntityId', 'EntityType'
+__all__ = ['Entity', 'EntityId', 'EntityState', 'EntityType']
 
 
 #: The identifier of each :class:`Entity`.  Alias of :class:`str`.
@@ -56,7 +56,7 @@ class multilingual_attribute:
 
 
 class EntityState(enum.Enum):
-    """Define state of entity."""
+    """Define state of :class:`Entity`."""
 
     not_loaded = 'not_loaded'
     loaded = 'loaded'
@@ -245,13 +245,12 @@ class Entity(collections.abc.Mapping, collections.abc.Hashable):
         return self.data
 
     def load(self) -> None:
+        if self.state is EntityState.non_existent:
+            return
+
         url = './wiki/Special:EntityData/{}.json'.format(self.id)
         result = self.client.request(url)
         if result is None:
-            self.data = None  # Not loaded yet
-            self.state = EntityState.not_loaded
-            return
-        elif result == 'Non-Existent':
             self.state = EntityState.non_existent
             return
 
@@ -263,14 +262,15 @@ class Entity(collections.abc.Mapping, collections.abc.Hashable):
         entity_id = self.id
         try:
             data = entities[entity_id]
+            self.state = EntityState.loaded
         except KeyError:
             entity_id = cast(EntityId, next(iter(entities)))
             data = entities[entity_id]
             redirected = True
+            self.state = EntityState.not_loaded
         assert isinstance(data, collections.abc.Mapping)
         self.data = data
         self.id = entity_id
-        self.state = EntityState.loaded
         if redirected:
             canon = self.client.get(entity_id, load=False)
             if canon.data is None:

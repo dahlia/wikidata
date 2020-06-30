@@ -5,7 +5,7 @@ import urllib.request
 from .mock import FixtureOpener
 from wikidata.cache import CacheKey, CachePolicy, CacheValue
 from wikidata.client import Client
-from wikidata.entity import Entity, EntityId, EntityType
+from wikidata.entity import Entity, EntityId, EntityState, EntityType
 
 if TYPE_CHECKING:
     from typing import Dict, Union  # noqa: F401
@@ -20,7 +20,7 @@ def test_client_get(fx_client: Client):
     assert entity2.data is not None
     assert entity2 is entity
     entity3 = fx_client.get(EntityId('1299'), load=True)  # http 400 error
-    assert entity3.state.name == 'non_existent'
+    assert entity3.state is EntityState.non_existent
 
 
 def test_client_guess_entity_type(

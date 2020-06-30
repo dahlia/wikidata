@@ -12,7 +12,7 @@ import urllib.parse
 
 from .client import Client
 
-__all__ = 'File', 'FileError'
+__all__ = ['File', 'FileError']
 
 
 class File:
