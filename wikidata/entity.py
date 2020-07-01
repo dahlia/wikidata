@@ -17,7 +17,7 @@ from .multilingual import MultilingualText
 if TYPE_CHECKING:
     from .client import Client  # noqa: F401
 
-__all__ = ['Entity', 'EntityId', 'EntityState', 'EntityType']
+__all__ = 'Entity', 'EntityId', 'EntityState', 'EntityType'
 
 
 #: The identifier of each :class:`Entity`.  Alias of :class:`str`.

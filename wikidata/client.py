@@ -19,7 +19,7 @@ from .entity import Entity, EntityId, EntityType
 if TYPE_CHECKING:
     from .datavalue import Decoder  # noqa: F401
 
-__all__ = ['WIKIDATA_BASE_URL', 'Client']
+__all__ = 'WIKIDATA_BASE_URL', 'Client'
 
 
 #: (:class:`str`) The default ``base_url`` of :class:`Client` constructor.

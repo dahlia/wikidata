@@ -7,7 +7,7 @@ from typing import Iterator, Mapping, Type, Union
 
 from babel.core import Locale
 
-__all__ = ['MonolingualText', 'MultilingualText', 'normalize_locale_code']
+__all__ = 'MonolingualText', 'MultilingualText', 'normalize_locale_code'
 
 
 class MultilingualText(collections.abc.Mapping):

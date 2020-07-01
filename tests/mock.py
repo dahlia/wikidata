@@ -12,8 +12,8 @@ import urllib.parse
 import urllib.request
 import urllib.response
 
-__all__ = ['ENTITY_FIXTURES_PATH', 'FIXTURES_PATH', 'MEDIA_FIXTURES_PATH',
-           'FixtureOpener']
+__all__ = ('ENTITY_FIXTURES_PATH', 'FIXTURES_PATH', 'MEDIA_FIXTURES_PATH',
+           'FixtureOpener')
 
 
 FIXTURES_PATH = pathlib.Path(__file__).parent / 'fixtures'
