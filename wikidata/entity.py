@@ -17,7 +17,7 @@ from .multilingual import MultilingualText
 if TYPE_CHECKING:
     from .client import Client  # noqa: F401
 
-__all__ = 'Entity', 'EntityId', 'EntityType'
+__all__ = 'Entity', 'EntityId', 'EntityState', 'EntityType'
 
 
 #: The identifier of each :class:`Entity`.  Alias of :class:`str`.
@@ -53,6 +53,14 @@ class multilingual_attribute:
             value = MultilingualText({k: v for k, v in pairs if k})
             obj.__dict__[cache_id] = value
         return value
+
+
+class EntityState(enum.Enum):
+    """Define state of :class:`Entity`."""
+
+    not_loaded = 'not_loaded'
+    loaded = 'loaded'
+    non_existent = 'non_existent'
 
 
 class EntityType(enum.Enum):
@@ -133,6 +141,7 @@ class Entity(collections.abc.Mapping, collections.abc.Hashable):
         self.id = id
         self.client = client
         self.data = None  # type: Optional[Mapping[str, object]]
+        self.state = EntityState.not_loaded
 
     def __eq__(self, other) -> bool:
         if not isinstance(other, type(self)):
@@ -236,8 +245,15 @@ class Entity(collections.abc.Mapping, collections.abc.Hashable):
         return self.data
 
     def load(self) -> None:
+        if self.state is EntityState.non_existent:
+            return
+
         url = './wiki/Special:EntityData/{}.json'.format(self.id)
         result = self.client.request(url)
+        if result is None:
+            self.state = EntityState.non_existent
+            return
+
         assert isinstance(result, collections.abc.Mapping)
         entities = result['entities']
         assert isinstance(entities, collections.abc.Mapping)
@@ -246,10 +262,12 @@ class Entity(collections.abc.Mapping, collections.abc.Hashable):
         entity_id = self.id
         try:
             data = entities[entity_id]
+            self.state = EntityState.loaded
         except KeyError:
             entity_id = cast(EntityId, next(iter(entities)))
             data = entities[entity_id]
             redirected = True
+            self.state = EntityState.not_loaded
         assert isinstance(data, collections.abc.Mapping)
         self.data = data
         self.id = entity_id

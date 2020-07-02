@@ -8,6 +8,7 @@ import logging
 from typing import (TYPE_CHECKING,
                     Callable, Mapping, MutableMapping, Optional, Sequence,
                     Union, cast)
+import urllib.error
 import urllib.parse
 import urllib.request
 import weakref
@@ -179,19 +180,27 @@ class Client:
 
     def request(self, path: str) -> Union[
         bool, int, float, str,
-        Mapping[
-            str,
-            Union[bool, int, float, str, Mapping[str, object], Sequence]
-        ],
-        Sequence[Union[bool, int, float, str, Mapping[str, object], Sequence]]
+        Mapping[str, Union[bool, int, float, str,
+                           Mapping[str, object], Sequence]],
+        Sequence[Union[bool, int, float, str, Mapping[str, object], Sequence]],
+        None
     ]:
         logger = logging.getLogger(__name__ + '.Client.request')
         url = urllib.parse.urljoin(self.base_url, path)
         result = self.cache_policy.get(CacheKey(url))
         if result is None:
             logger.debug('%r: no cache; make a request...', url)
-            response = self.opener.open(url)
-            buffer_ = io.TextIOWrapper(response, encoding='utf-8')
+            try:
+                response = self.opener.open(url)
+            except urllib.error.HTTPError as e:
+                logger.debug('HTTP error code: %s', e.code, exc_info=True)
+                if e.code == 400 and b'Invalid ID' in e.read():
+                    return None
+                else:
+                    raise e
+
+            buffer_ = io.TextIOWrapper(response,
+                                       encoding='utf-8')
             result = json.load(buffer_)
             self.cache_policy.set(CacheKey(url), result)
         else:

@@ -129,5 +129,13 @@ class FixtureOpener(urllib.request.OpenerDirector):
                         'curl -o %s %s',
                         path, path, fullurl)
         hdrs.add_header('Content-Type', 'text/plain; charset=utf-8')
+        if fullurl[-5:] == '.json':
+            fp = io.BytesIO(
+                b'''<!DOCTYPE html><html><head><title>Bad Request</title>
+                </head><body><h1>Bad Request</h1>
+                <p>Invalid ID: .</p></body></html>
+                ''')
+            raise urllib.error.HTTPError(
+                fullurl, 400, 'Bad Request', hdrs, fp)
         fp = io.BytesIO(b'Not Found: ' + fullurl.encode())
         raise urllib.error.HTTPError(fullurl, 404, 'Not Found', hdrs, fp)
