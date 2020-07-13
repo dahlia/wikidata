@@ -94,7 +94,7 @@ class File:
                             repr(result['error']))
         query = result['query']
         assert isinstance(query, collections.abc.Mapping)
-        _, self.data = query['pages'].popitem()
+        self.data = next(iter(query['pages'].values()))
 
     def __repr__(self) -> str:
         return '<{0.__module__}.{0.__qualname__} {1!r}>'.format(
