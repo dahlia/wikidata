@@ -15,6 +15,9 @@ To be released.
   [:pr:`11`]
 - Fixed a bug that raised :exc:`~urllib.error.HTTPError` when
   non-existent `Entity` was requested.  [:pr:`11`]
+- Fixed a bug that raised :exc:`KeyError` when accessing an image more than
+  once and MemoryCache was enabled [:pr:`24`]
+
 
 Version 0.6.1
 -------------
