@@ -21,3 +21,9 @@ def test_globecoordinate_value(fx_globecoordinate: GlobeCoordinate):
     assert fx_globecoordinate.precision == 0.0002777777777777778
     assert isinstance(fx_globecoordinate.globe, Entity)
     assert fx_globecoordinate.globe.id == "Q111"
+
+
+def test_globecoordinate_repr(fx_globecoordinate: GlobeCoordinate):
+    assert (repr(fx_globecoordinate) ==
+            ("wikidata.globecoordinate.GlobeCoordinate(70.1525, 70.1525, "
+             "<wikidata.entity.Entity Q111>, 0.0002777777777777778)"))

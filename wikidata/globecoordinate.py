@@ -44,3 +44,13 @@ class GlobeCoordinate:
                      self.latitude,
                      self.globe,
                      self.precision))
+
+    def __repr__(self) -> str:
+        return ('{0.__module__}.{0.__qualname__}({1!r}, '
+                '{2!r}, {3!r}, {4!r})').format(
+                    type(self),
+                    self.latitude,
+                    self.longitude,
+                    self.globe,
+                    self.precision
+                )
