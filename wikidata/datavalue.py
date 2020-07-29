@@ -197,6 +197,7 @@ class Decoder:
         except KeyError:
             raise DatavalueError('precision field is missing', datavalue)
         if precision == 9:
+            # The time only specifies the year.
             return int(time[1:5])
         if precision == 11:
             return datetime.date(int(time[1:5]), int(time[6:8]),
