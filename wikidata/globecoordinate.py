@@ -1,3 +1,7 @@
+""":mod:`wikidata.globecoordinate` --- Globe coordinate
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 from .entity import Entity
 
 __all__ = 'GlobeCoordinate',
