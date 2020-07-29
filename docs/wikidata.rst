@@ -10,3 +10,4 @@
       wikidata/datavalue
       wikidata/entity
       wikidata/multilingual
+      wikidata/quantity

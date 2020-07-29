@@ -6,8 +6,9 @@ from pytest import mark, raises
 from wikidata.client import Client
 from wikidata.commonsmedia import File
 from wikidata.datavalue import DatavalueError, Decoder
-from wikidata.entity import Entity
+from wikidata.entity import Entity, EntityId
 from wikidata.multilingual import MonolingualText
+from wikidata.quantity import Quantity
 
 
 def test_datavalue_error():
@@ -152,3 +153,39 @@ def test_decoder_commonsMedia__string(fx_client: Client):
           {'value': 'The Fabs.JPG', 'type': 'string'})
     assert isinstance(f, File)
     assert f.title == 'File:The Fabs.JPG'
+
+
+def test_decoder_quantity_with_unit(fx_client: Client):
+    d = Decoder()
+    decoded = d(fx_client, 'quantity', {
+        'value': {
+            "amount": "+610.13",
+            "lower_bound": "+610.12",
+            "upper_bound": "+610.14",
+            "unit": "http://www.wikidata.org/entity/Q828224"
+        },
+        'type': 'quantity'
+    })
+    gold = Quantity(
+        amount=610.13,
+        lower_bound=610.12,
+        upper_bound=610.14,
+        unit=fx_client.get(EntityId("Q828224")))
+    assert decoded == gold
+
+
+def test_decoder_quantity_unitless(fx_client: Client):
+    d = Decoder()
+    decoded = d(fx_client, 'quantity', {
+        'value': {
+            "amount": "+12",
+            "unit": "1"
+        },
+        'type': 'quantity'
+    })
+    gold = Quantity(
+        amount=12,
+        lower_bound=None,
+        upper_bound=None,
+        unit=None)
+    assert decoded == gold
