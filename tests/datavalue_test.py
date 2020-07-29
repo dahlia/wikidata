@@ -6,7 +6,7 @@ from pytest import mark, raises
 from wikidata.client import Client
 from wikidata.commonsmedia import File
 from wikidata.datavalue import DatavalueError, Decoder
-from wikidata.entity import Entity
+from wikidata.entity import Entity, EntityId
 from wikidata.globecoordinate import GlobeCoordinate
 from wikidata.multilingual import MonolingualText
 
@@ -167,6 +167,6 @@ def test_decoder_globecoordinate(fx_client: Client):
     })
     gold = GlobeCoordinate(70.1525,
                            70.1525,
-                           fx_client.get("Q111"),
+                           fx_client.get(EntityId("Q111")),
                            0.0002777777777777778,)
     assert decoded == gold

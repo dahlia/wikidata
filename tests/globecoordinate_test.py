@@ -1,7 +1,7 @@
 from pytest import fixture
 
 from wikidata.client import Client
-from wikidata.entity import Entity
+from wikidata.entity import Entity, EntityId
 from wikidata.globecoordinate import GlobeCoordinate
 
 
@@ -12,7 +12,7 @@ def fx_globecoordinate() -> GlobeCoordinate:
         latitude=70.1525,
         longitude=70.1525,
         precision=0.0002777777777777778,
-        globe=client.get("Q111"))
+        globe=client.get(EntityId("Q111")))
 
 
 def test_globecoordinate_value(fx_globecoordinate: GlobeCoordinate):
