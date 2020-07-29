@@ -8,11 +8,11 @@ from wikidata.globecoordinate import GlobeCoordinate
 @fixture
 def fx_globecoordinate() -> GlobeCoordinate:
     client = Client()
-    return GlobeCoordinate(**{
-        "latitude": 70.1525,
-        "longitude": 70.1525,
-        "precision": 0.0002777777777777778,
-        "globe": client.get("Q111")})
+    return GlobeCoordinate(
+        latitude=70.1525,
+        longitude=70.1525,
+        precision=0.0002777777777777778,
+        globe=client.get("Q111"))
 
 
 def test_globecoordinate_value(fx_globecoordinate: GlobeCoordinate):
