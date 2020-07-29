@@ -149,7 +149,8 @@ class Decoder:
     def time(self,
              client: Client,
              datavalue: Mapping[str, object]) -> Union[datetime.date,
-                                                       datetime.datetime]:
+                                                       datetime.datetime,
+                                                       int]:
         value = datavalue['value']
         if not isinstance(value, collections.abc.Mapping):
             raise DatavalueError(
@@ -195,6 +196,9 @@ class Decoder:
             precision = value['precision']
         except KeyError:
             raise DatavalueError('precision field is missing', datavalue)
+        if precision == 9:
+            # The time only specifies the year.
+            return int(time[1:5])
         if precision == 11:
             return datetime.date(int(time[1:5]), int(time[6:8]),
                                  int(time[9:11]))
@@ -205,7 +209,7 @@ class Decoder:
             ).replace(tzinfo=datetime.timezone.utc)
         else:
             raise DatavalueError(
-                '{!r}: time precision other than 11 or 14 is '
+                '{!r}: time precision other than 9, 11 or 14 is '
                 'unsupported'.format(precision),
                 datavalue
             )

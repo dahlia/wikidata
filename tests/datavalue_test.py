@@ -86,6 +86,7 @@ def test_decoder__time(datatype: str, fx_client: Client):
         })
     assert (datetime.date(2017, 2, 22) ==
             d(fx_client, datatype, other_value(precision=11)))
+    assert 2017 == d(fx_client, datatype, other_value(precision=9))
     utc = datetime.timezone.utc
     assert (datetime.datetime(2017, 2, 22, 2, 53, 12, tzinfo=utc) ==
             d(fx_client, datatype, valid))
@@ -127,7 +128,7 @@ def test_decoder__time(datatype: str, fx_client: Client):
         d(fx_client, datatype, other_value(precision=None))
         # precision field is missing
     for p in range(1, 15):
-        if p in (11, 14):
+        if p in (9, 11, 14):
             continue
         with raises(DatavalueError):
             d(fx_client, datatype, other_value(precision=p))
