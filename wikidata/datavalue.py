@@ -16,10 +16,11 @@ but only need to satify::
 """
 import collections.abc
 import datetime
-from typing import TYPE_CHECKING, Mapping, Union
+from typing import TYPE_CHECKING, Any, Mapping, Union
 
 from .client import Client
 from .commonsmedia import File
+from .globecoordinate import GlobeCoordinate
 from .multilingual import MonolingualText
 if TYPE_CHECKING:
     from .entity import Entity  # noqa: F401
@@ -219,6 +220,22 @@ class Decoder:
                         datavalue: Mapping[str, object]) -> MonolingualText:
         pair = datavalue['value']
         return MonolingualText(pair['text'], pair['language'])  # type: ignore
+
+    def globecoordinate(self,
+                        client: Client,
+                        datavalue: Mapping[str, Any]) -> GlobeCoordinate:
+        pair = datavalue['value']
+        # Try to split out the entity from the globe string.
+        globe_entity = pair["globe"].split("http://www.wikidata.org/entity/")
+        if len(globe_entity) != 2:
+            raise DatavalueError(
+                "Globe string {} does not appear to be a "
+                "valid WikiData entity URL".format(pair["globe"]))
+        entity_id = globe_entity[1]
+        return GlobeCoordinate(pair['latitude'],
+                               pair['longitude'],
+                               client.get(entity_id),
+                               pair['precision'])
 
     def commonsMedia__string(self,
                              client: Client,
