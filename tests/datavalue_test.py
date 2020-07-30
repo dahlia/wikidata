@@ -189,6 +189,7 @@ def test_decoder_quantity_unitless(fx_client: Client):
         lower_bound=None,
         upper_bound=None,
         unit=None)
+    assert decoded == gold
 
 
 def test_decoder_globecoordinate(fx_client: Client):
