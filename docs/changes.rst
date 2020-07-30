@@ -4,7 +4,7 @@ Changelog
 Version 0.7.0
 -------------
 
-To be released.
+Released on July 31, 2020.
 
 - Marked the package as supporting type checking by following :pep:`561`.
 
