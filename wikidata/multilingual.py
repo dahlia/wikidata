@@ -9,7 +9,7 @@ __all__ = 'Locale', 'MonolingualText', 'MultilingualText'
 
 
 #: The locale of each :class:`MonolingualText` or internal
-#  mapping of each :class:`MultilingualText`.  Alias of :class:`str`.
+#:  mapping of each :class:`MultilingualText`.  Alias of :class:`str`.
 Locale = NewType('Locale', str)
 
 
