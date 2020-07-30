@@ -59,7 +59,7 @@ class MonolingualText(str):
     :attr:`locale`, that denotes what language the text is written in.
     """
 
-    #: (:class:`str`) The code of :attr:`locale`.
+    #: (:class:`Locale`) The code of :attr:`locale`.
     locale = None  # type: Locale
 
     def __new__(cls: Type[str],
