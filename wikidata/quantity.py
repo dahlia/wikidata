@@ -1,5 +1,7 @@
 """:mod:`wikidata.quantity` --- Quantity
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. versionadded:: 0.7.0
 
 """
 from typing import Optional

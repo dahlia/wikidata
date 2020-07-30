@@ -49,10 +49,20 @@ class multilingual_attribute:
 
 
 class EntityState(enum.Enum):
-    """Define state of :class:`Entity`."""
+    """Define state of :class:`Entity`.
 
+    .. versionadded:: 0.7.0
+
+    """
+
+    #: (:class:`EntityState`) Not loaded yet.  Unknown whether the entity
+    #: does exist or not.
     not_loaded = 'not_loaded'
+
+    #: (:class:`EntityState`) The entity exists and is already loaded.
     loaded = 'loaded'
+
+    #: (:class:`EntityState`) The entity does not exist.
     non_existent = 'non_existent'
 
 
@@ -125,6 +135,12 @@ class Entity(collections.abc.Mapping, collections.abc.Hashable):
        Implemented :class:`~typing.Hashable` protocol and
        :token:`==`/:token:`!=` operators for equality test.
 
+    .. attribute:: state
+
+       (:class:`EntityState`) The loading state.
+
+       .. versionadded:: 0.7.0
+
     """
 
     label = multilingual_attribute('labels')
@@ -134,7 +150,7 @@ class Entity(collections.abc.Mapping, collections.abc.Hashable):
         self.id = id
         self.client = client
         self.data = None  # type: Optional[Mapping[str, object]]
-        self.state = EntityState.not_loaded
+        self.state = EntityState.not_loaded  # type: EntityState
 
     def __eq__(self, other) -> bool:
         if not isinstance(other, type(self)):

@@ -7,24 +7,48 @@ Version 0.7.0
 To be released.
 
 - Marked the package as supporting type checking by following :pep:`561`.
-- Fixed :exc:`KeyError` from :meth:`Entity.getlist()
-  <wikidata.entity.Entity.getlist>` if the property is explictly associated
-  with "no value". [:issue:`18`]
-- Added :class:`~wikidata.entity.EntityState` enum class.  [:pr:`11`]
-- Added :attr:`Entity.state <wikidata.entity.Entity.state>` attribute.
-  [:pr:`11`]
-- Added support for ``time`` datatypes with precision 9 (year-only).  [:pr:`26`]
-- Added support for decoding the ``globe-coordinate`` datatype.  [:pr:`28`]
-- Fixed a bug that raised :exc:`~urllib.error.HTTPError` when
-  non-existent `Entity` was requested.  [:pr:`11`]
-- Added support for decoding the ``quantity`` datatype.  [:pr:`29`]
-- Fixed a bug that raised :exc:`KeyError` when accessing an image more than
-  once and :class:`~wikidata.cache.MemoryCachePolicy` was enabled.  [:pr:`24`]
-- Removed Babel_ from the dependencies.  [:issue:`2`, :issue:`27`, :pr:`30`]
 
-  To replace the :class:`babel.core.Locale` type, the `Locale` type has been
-  aliased to `str`. This is a **breaking change** for all Wikidata public API
-  functions that formerly returned or ingested :class:`babel.core.Locale` .
+- Now non-existent entities became able to be handled.  [:pr:`11`]
+
+  - Added :class:`~wikidata.entity.EntityState` enum class.
+  - Added :attr:`Entity.state <wikidata.entity.Entity.state>` attribute.
+  - Fixed a bug that raised :exc:`~urllib.error.HTTPError` when
+    non-existent :class:`~wikidata.entity.Entity` was requested.
+
+- Languages (locales) became no more represented as :class:`babel.core.Locale`,
+  but represented :class:`wikidata.multilingual.Locale` instead.
+  [:issue:`2`, :issue:`27`, :pr:`30` by Nelson Liu]
+
+  - Removed Babel_ from the dependencies.
+
+  - Added :class:`wikidata.multilingual.Locale` type.
+
+    To replace the :class:`babel.core.Locale` type,
+    the :class:`wikidata.multilingual.Locale` type has been
+    aliased to `str`. This is a *breaking change* for all Wikidata public API
+    functions that formerly returned or ingested :class:`babel.core.Locale` .
+
+- Added support for ``time`` datatypes with precision 9 (year-only).
+  [:pr:`26` by Nelson Liu]
+
+- Added support for globe coordinate datatype.  [:pr:`28` by Nelson Liu]
+
+  - Added support for decoding the ``globe-coordinate`` datatype.
+  - Added :mod:`wikidata.globecoordinate` module.
+
+- Added support for quantity datatype.  [:pr:`29` by Nelson Liu]
+
+  - Added support for decoding the ``quantity`` datatype.
+  - Added :mod:`wikidata.quantity` module.  [:pr:`29`]
+
+- Fixed :exc:`KeyError` from :meth:`Entity.getlist()
+  <wikidata.entity.Entity.getlist>` if the property is explicitly associated
+  with "no value". [:issue:`18`]
+
+- Fixed a bug that raised :exc:`KeyError` when accessing an image more than
+  once and :class:`~wikidata.cache.MemoryCachePolicy` was enabled.
+  [:pr:`24` by Héctor Cordobés]
+
 
 Version 0.6.1
 -------------

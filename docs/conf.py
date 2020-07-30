@@ -355,6 +355,9 @@ texinfo_documents = [
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3/', None),
     'werkzeug': ('http://werkzeug.pocoo.org/docs/0.12/', None),
+
+    # Remains for the changelog:
+    'babel': ('http://babel.pocoo.org/en/latest/', None),
 }
 
 
