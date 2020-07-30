@@ -7,6 +7,7 @@ from wikidata.client import Client
 from wikidata.commonsmedia import File
 from wikidata.datavalue import DatavalueError, Decoder
 from wikidata.entity import Entity, EntityId
+from wikidata.globecoordinate import GlobeCoordinate
 from wikidata.multilingual import MonolingualText
 from wikidata.quantity import Quantity
 
@@ -188,4 +189,21 @@ def test_decoder_quantity_unitless(fx_client: Client):
         lower_bound=None,
         upper_bound=None,
         unit=None)
+
+
+def test_decoder_globecoordinate(fx_client: Client):
+    d = Decoder()
+    decoded = d(fx_client, 'globe-coordinate', {
+        'value': {
+            "latitude": 70.1525,
+            "longitude": 70.1525,
+            "precision": 0.0002777777777777778,
+            "globe": "http://www.wikidata.org/entity/Q111"
+        },
+        'type': 'globecoordinate'
+    })
+    gold = GlobeCoordinate(70.1525,
+                           70.1525,
+                           fx_client.get(EntityId("Q111")),
+                           0.0002777777777777778,)
     assert decoded == gold

@@ -9,5 +9,6 @@
       wikidata/commonsmedia
       wikidata/datavalue
       wikidata/entity
+      wikidata/globecoordinate
       wikidata/multilingual
       wikidata/quantity
