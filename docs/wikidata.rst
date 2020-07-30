@@ -11,3 +11,4 @@
       wikidata/entity
       wikidata/globecoordinate
       wikidata/multilingual
+      wikidata/quantity

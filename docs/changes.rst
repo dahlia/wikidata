@@ -17,6 +17,7 @@ To be released.
 - Added support for decoding the ``globe-coordinate`` datatype.  [:pr:`28`]
 - Fixed a bug that raised :exc:`~urllib.error.HTTPError` when
   non-existent `Entity` was requested.  [:pr:`11`]
+- Added support for decoding the ``quantity`` datatype.  [:pr:`29`]
 - Fixed a bug that raised :exc:`KeyError` when accessing an image more than
   once and :class:`~wikidata.cache.MemoryCachePolicy` was enabled.  [:pr:`24`]
 

@@ -22,6 +22,7 @@ from .client import Client
 from .commonsmedia import File
 from .globecoordinate import GlobeCoordinate
 from .multilingual import MonolingualText
+from .quantity import Quantity
 if TYPE_CHECKING:
     from .entity import Entity  # noqa: F401
 
@@ -220,6 +221,34 @@ class Decoder:
                         datavalue: Mapping[str, object]) -> MonolingualText:
         pair = datavalue['value']
         return MonolingualText(pair['text'], pair['language'])  # type: ignore
+
+    def quantity(self,
+                 client: Client,
+                 datavalue: Mapping[str, Any]) -> Quantity:
+        pair = datavalue['value']
+        raw_unit = pair.get("unit", "1")
+        if raw_unit == "1":
+            # If the value is unitless, the unit has a string value "1"
+            unit = None
+        else:
+            # Try to parse the unit as an Entity.
+            unit_entity = raw_unit.split("http://www.wikidata.org/entity/")
+            if len(unit_entity) != 2:
+                raise DatavalueError(
+                    "Unit string {} does not appear to be a "
+                    "valid WikiData entity URL or \"1\"".format(raw_unit))
+            unit = client.get(unit_entity[1])
+        # Parse the amount as a float
+        amount = float(pair["amount"])
+        # Parse the lower and upper bound
+        lower_bound = pair.get('lower_bound', None)
+        lower_bound = float(lower_bound) if lower_bound else lower_bound
+        upper_bound = pair.get('upper_bound', None)
+        upper_bound = float(upper_bound) if upper_bound else upper_bound
+        return Quantity(amount,
+                        lower_bound,
+                        upper_bound,
+                        unit)
 
     def globecoordinate(self,
                         client: Client,
