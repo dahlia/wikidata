@@ -2,13 +2,12 @@ import json
 from typing import Iterable
 import urllib.request
 
-from babel.core import Locale
 from pytest import raises
 
 from .mock import ENTITY_FIXTURES_PATH
 from wikidata.client import Client
 from wikidata.entity import Entity, EntityId, EntityType
-from wikidata.multilingual import MultilingualText
+from wikidata.multilingual import Locale, MultilingualText
 
 
 def test_entity_equality(fx_client_opener: urllib.request.OpenerDirector,
@@ -32,44 +31,39 @@ def test_entity_equality(fx_client_opener: urllib.request.OpenerDirector,
 def test_entity_label(fx_loaded_entity: Entity,
                       fx_unloaded_entity: Entity):
     assert isinstance(fx_loaded_entity.label, MultilingualText)
-    assert fx_loaded_entity.label[Locale.parse('ko')] == '신중현'
-    assert fx_loaded_entity.label[Locale.parse('zh_Hant')] == '申重鉉'
+    assert fx_loaded_entity.label[Locale('ko')] == '신중현'
+    assert fx_loaded_entity.label[Locale('zh-hant')] == '申重鉉'
     assert isinstance(fx_unloaded_entity.label, MultilingualText)
-    assert fx_unloaded_entity.label[Locale.parse('en')] == 'The Beatles'
-    assert fx_unloaded_entity.label[Locale.parse('ko')] == '비틀즈'
+    assert fx_unloaded_entity.label[Locale('en')] == 'The Beatles'
+    assert fx_unloaded_entity.label[Locale('ko')] == '비틀즈'
 
 
 def test_entity_description(fx_loaded_entity: Entity,
                             fx_unloaded_entity: Entity):
     assert isinstance(fx_loaded_entity.description, MultilingualText)
-    assert fx_loaded_entity.description[Locale.parse('ko')] == \
+    assert fx_loaded_entity.description[Locale('ko')] == \
         '대한민국의 록 음악 싱어송라이터 및 기타리스트'
-    assert fx_loaded_entity.description[Locale.parse('ja')] == \
+    assert fx_loaded_entity.description[Locale('ja')] == \
         '韓国のロックミュージシャン'
     assert isinstance(fx_unloaded_entity.description, MultilingualText)
-    assert fx_unloaded_entity.description[Locale.parse('en')] == \
+    assert fx_unloaded_entity.description[Locale('en')] == \
         'English rock band'
-    assert fx_unloaded_entity.description[Locale.parse('ko')] == \
+    assert fx_unloaded_entity.description[Locale('ko')] == \
         '영국의 락 밴드'
 
 
 def test_entity_label_description_three_chars_lang_codes(fx_client: Client):
-    """As a short-term workaround, we currently ignore language codes
-    ISO 639-1 doesn't cover.
-
-    See also: https://github.com/dahlia/wikidata/issues/2
-
+    """
+    Ensure that three-character language codes are handled
     """
     cbk_zam = fx_client.get(EntityId('Q33281'), load=True)
     assert isinstance(cbk_zam.label, MultilingualText)
-    assert cbk_zam.label[Locale.parse('ko')] == '차바카노어'
-    assert 'cbk-zam' not in cbk_zam.label
-    assert 'cbk_zam' not in cbk_zam.label
+    assert cbk_zam.label[Locale('ko')] == '차바카노어'
+    assert Locale('cbk-zam') in cbk_zam.label
     assert isinstance(cbk_zam.description, MultilingualText)
-    assert cbk_zam.description[Locale.parse('en')] == \
+    assert cbk_zam.description[Locale('en')] == \
         'Spanish-based creole language spoken in the Philippines'
-    assert 'cbk-zam' not in cbk_zam.description
-    assert 'cbk_zam' not in cbk_zam.description
+    assert Locale('cbk-zam') not in cbk_zam.description
 
 
 def test_entity_type(fx_item: Entity,

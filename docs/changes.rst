@@ -20,7 +20,11 @@ To be released.
 - Added support for decoding the ``quantity`` datatype.  [:pr:`29`]
 - Fixed a bug that raised :exc:`KeyError` when accessing an image more than
   once and :class:`~wikidata.cache.MemoryCachePolicy` was enabled.  [:pr:`24`]
+- Removed Babel_ from the dependencies.  [:issue:`2`, :issue:`27`, :pr:`30`]
 
+  To replace the :class:`babel.core.Locale` type, the `Locale` type has been
+  aliased to `str`. This is a **breaking change** for all Wikidata public API
+  functions that formerly returned or ingested :class:`babel.core.Locale` .
 
 Version 0.6.1
 -------------

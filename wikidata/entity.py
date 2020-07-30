@@ -10,8 +10,6 @@ from typing import (TYPE_CHECKING, Iterator, Mapping, NewType,
                     Optional, Sequence, Tuple, Union,
                     cast)
 
-from babel.core import Locale, UnknownLocaleError
-
 from .multilingual import MultilingualText
 
 if TYPE_CHECKING:
@@ -39,15 +37,10 @@ class multilingual_attribute:
         try:
             value = obj.__dict__[cache_id]
         except KeyError:
-            def parse(locale: str) -> Optional[Locale]:
-                try:
-                    return Locale.parse(locale.replace('-', '_'))
-                except (ValueError, UnknownLocaleError):
-                    return None
             attr = obj.attributes.get(self.attribute) or {}
             assert isinstance(attr, collections.abc.Mapping)
             pairs = (
-                (parse(item['language']), item['value'])
+                (item['language'], item['value'])
                 for item in attr.values()
             )
             value = MultilingualText({k: v for k, v in pairs if k})
