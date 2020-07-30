@@ -17,7 +17,7 @@ To be released.
   non-existent `Entity` was requested.  [:pr:`11`]
 - Added support for `time` datatypes with precision `9` (year-only).  [:pr:`26`]
 - Added support for decoding the ``globe-coordinate`` datatype.  [:pr:`28`]
-- Removed Babel_ from the dependencies.  [:pr:`30`]
+- Removed Babel_ from the dependencies.  [:issue:`2`, :issue:`27`, :pr:`30`]
 
 Version 0.6.1
 -------------
