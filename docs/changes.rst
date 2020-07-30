@@ -13,6 +13,8 @@ To be released.
 - Added :class:`~wikidata.entity.EntityState` enum class.  [:pr:`11`]
 - Added :attr:`Entity.state <wikidata.entity.Entity.state>` attribute.
   [:pr:`11`]
+- Added support for ``time`` datatypes with precision 9 (year-only).  [:pr:`26`]
+- Added support for decoding the ``globe-coordinate`` datatype.  [:pr:`28`]
 - Fixed a bug that raised :exc:`~urllib.error.HTTPError` when
   non-existent `Entity` was requested.  [:pr:`11`]
 - Fixed a bug that raised :exc:`KeyError` when accessing an image more than
