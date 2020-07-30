@@ -5,7 +5,7 @@
 import collections.abc
 from typing import Iterator, Mapping, NewType, Type, Union
 
-__all__ = 'MonolingualText', 'MultilingualText'
+__all__ = 'Locale', 'MonolingualText', 'MultilingualText'
 
 
 #: The locale of each :class:`MonolingualText` or internal
