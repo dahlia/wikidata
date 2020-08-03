@@ -31,7 +31,7 @@ from wikidata import __version__  # noqa: E402
 
 # If your documentation needs a minimal Sphinx version, state it here.
 #
-needs_sphinx = '1.3'
+needs_sphinx = '3.0'
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -62,7 +62,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'Wikidata'
-copyright = '2017, Hong Minhee'
+copyright = '2017\N{EN DASH}2020, Hong Minhee'
 author = 'Hong Minhee'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -354,10 +354,10 @@ texinfo_documents = [
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3/', None),
-    'werkzeug': ('http://werkzeug.pocoo.org/docs/0.12/', None),
+    'werkzeug': ('https://werkzeug.palletsprojects.com/en/1.0.x/', None),
 
     # Remains for the changelog:
-    'babel': ('http://babel.pocoo.org/en/latest/', None),
+    'babel': ('http://babel.pocoo.org/en/stable/', None),
 }
 
 

@@ -5,6 +5,7 @@
 .mypy_cache
 .pytest_cache
 .tox
+__pycache__
 build
 dist
 docs/_build
