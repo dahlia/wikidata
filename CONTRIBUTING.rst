@@ -1,6 +1,30 @@
 Contributing
 ============
 
+What branch to work on
+----------------------
+
+This project follows `Semantic Versioning`_, and every release is tagged.
+There are also branches looking like version numbers except of they have only
+one period (instead of two), e.g., *0.6*, *0.7*.  These are maintenance
+branches.  The branch named *main* [#]_ is for preparing next major version.
+
+If you send a patch to fix a bug your pull request usually should be based on
+the latest maintenance branch, not *main*.
+
+If you send a patch to add a new feature it should be based on
+the *main* branch.
+
+.. [#] We don't use the term *master*.  For the rationale, please read
+   the following discussion and articles:
+
+   - https://lore.kernel.org/git/CAOAHyQwyXC1Z3v7BZAC+Bq6JBaM7FvBenA-1fcqeDV==apdWDg@mail.gmail.com/
+   - https://www.bbc.com/news/technology-53050955
+   - https://sfconservancy.org/news/2020/jun/23/gitbranchname/
+
+.. _Semantic Versioning: https://semver.org/
+
+
 How to run tests
 ----------------
 
