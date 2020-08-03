@@ -1,0 +1,5 @@
+{
+  "restructuredtext.confPath": "${workspaceFolder}/docs",
+  "restructuredtext.linter.executablePath": "${workspaceFolder}/.tox/docs/bin/rstcheck",
+  "restructuredtext.sphinxBuildPath": "${workspaceFolder}/.tox/docs/bin/sphinx-build"
+}
