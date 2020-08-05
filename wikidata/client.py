@@ -5,9 +5,17 @@
 import io
 import json
 import logging
-from typing import (TYPE_CHECKING,
-                    Callable, Mapping, MutableMapping, Optional, Sequence,
-                    Union, cast)
+from typing import (
+    TYPE_CHECKING,
+    Callable,
+    Mapping,
+    MutableMapping,
+    Optional,
+    Sequence,
+    Tuple,
+    Union,
+    cast,
+)
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -84,6 +92,9 @@ class Client:
     cache_policy = NullCachePolicy()  # type: CachePolicy
 
     def __init__(self,
+                 # CHECK: If the signature of this function changes,
+                 #        the implementation of __reduce__() also should be
+                 #        changed.
                  base_url: str = WIKIDATA_BASE_URL,
                  opener: Optional[urllib.request.OpenerDirector] = None,
                  datavalue_decoder: Union['Decoder',
@@ -94,7 +105,8 @@ class Client:
                  entity_type_guess: bool = True,
                  cache_policy: CachePolicy = NullCachePolicy(),
                  repr_string: Optional[str] = None) -> None:
-        if opener is None:
+        self._using_default_opener = opener is None
+        if self._using_default_opener:
             if urllib.request._opener is None:  # type: ignore
                 try:
                     urllib.request.urlopen('')
@@ -206,6 +218,16 @@ class Client:
         else:
             logger.debug('%r: cache hit', url)
         return result  # type: ignore
+
+    def __reduce__(self) -> Tuple[Callable[..., 'Client'], Tuple[object, ...]]:
+        return type(self), (
+            self.base_url,
+            None if self._using_default_opener else self.opener,
+            self.datavalue_decoder,
+            self.entity_type_guess,
+            self.cache_policy,
+            self.repr_string,
+        )
 
     def __repr__(self) -> str:
         if self.repr_string is not None:

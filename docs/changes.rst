@@ -6,6 +6,8 @@ Version 0.8.0
 
 To be released.
 
+- :class:`~wikidata.entity.Entity` and :class:`~wikidata.client.Client` became
+  possible to be serialized using :mod:`pickle`.  [:issue:`31`]
 - Fixed a typing bug that :attr:`Entity.label <wikidata.entity.Entity.label>`
   and :attr:`Entity.description <wikidata.entity.Entity.description>` properties
   were incorrectly typed.

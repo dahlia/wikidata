@@ -1,4 +1,5 @@
 import json
+import pickle
 from typing import Iterable
 import urllib.request
 
@@ -154,6 +155,15 @@ def test_entity_load_redirected_entity(fx_client: Client,
     assert fx_redirected_entity.id == alternate_id
     fx_redirected_entity.load()
     assert fx_redirected_entity.id == canonical_id
+
+
+def test_entity_pickle(fx_unloaded_entity: Entity, fx_loaded_entity: Entity):
+    for entity in fx_unloaded_entity, fx_unloaded_entity:
+        dumped = pickle.dumps(entity)
+        loaded = pickle.loads(dumped)
+        assert isinstance(loaded, Entity)
+        assert loaded.state is entity.state
+        assert loaded.label[Locale('en')] == entity.label[Locale('en')]
 
 
 def test_entity_repr(fx_unloaded_entity: Entity,

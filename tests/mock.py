@@ -33,9 +33,11 @@ class FixtureOpener(urllib.request.OpenerDirector):
         )
         # ./w/api.php?action=query&prop=imageinfo|info&inprop=url&iiprop=url|size|mime&format=json&titles={}  # noqa: E501
         self.records = []  # type: typing.List[typing.Tuple[str, str]]
+
+    @property
+    def logger(self):
         cls = type(self)
-        self.logger = logging.getLogger(cls.__qualname__) \
-                             .getChild(cls.__name__)
+        return logging.getLogger(cls.__qualname__).getChild(cls.__name__)
 
     @staticmethod
     def match_netloc(a: urllib.parse.ParseResult,

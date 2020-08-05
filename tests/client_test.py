@@ -1,4 +1,5 @@
 import json
+import pickle
 from typing import TYPE_CHECKING, Optional
 import urllib.request
 
@@ -6,6 +7,7 @@ from .mock import FixtureOpener
 from wikidata.cache import CacheKey, CachePolicy, CacheValue
 from wikidata.client import Client
 from wikidata.entity import Entity, EntityId, EntityState, EntityType
+from wikidata.multilingual import Locale
 
 if TYPE_CHECKING:
     from typing import Dict, Union  # noqa: F401
@@ -82,6 +84,14 @@ def test_client_cache_policy(fx_client_opener: FixtureOpener):
     e2 = client2.get(EntityId('Q1299'), load=True)
     assert e1.attributes == e2.attributes
     assert len(fx_client_opener.records) == 2
+
+
+def test_client_pickle(fx_client: Client):
+    dumped = pickle.dumps(fx_client)
+    c = pickle.loads(dumped)
+    entity = c.get(EntityId('Q1299'), load=True)
+    assert isinstance(entity, Entity)
+    assert entity.label[Locale('en')] == 'The Beatles'
 
 
 def test_client_repr():
