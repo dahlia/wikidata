@@ -6,9 +6,18 @@ import collections.abc
 import enum
 import logging
 import pprint
-from typing import (TYPE_CHECKING, Iterator, Mapping, NewType,
-                    Optional, Sequence, Tuple, Union,
-                    cast)
+from typing import (
+    TYPE_CHECKING,
+    Iterator,
+    Mapping,
+    NewType,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    cast,
+    overload,
+)
 
 from .multilingual import MultilingualText
 
@@ -28,10 +37,24 @@ class multilingual_attribute:
     def __init__(self, attribute: str) -> None:
         self.attribute = attribute
 
-    def __get__(self,
-                obj: 'Entity',
-                cls=None) -> Union[MultilingualText, type]:
-        if obj is None:
+    @overload
+    def __get__(
+        self,
+        obj: None,
+        cls: Type['Entity'] = ...
+    ) -> 'multilingual_attribute':
+        ...
+
+    @overload
+    def __get__(
+        self,
+        obj: 'Entity',
+        cls: Type['Entity'] = ...
+    ) -> MultilingualText:
+        ...
+
+    def __get__(self, obj, cls=None):
+        if obj is None or isinstance(obj, type):
             return self
         cache_id = '$' + self.attribute
         try:
