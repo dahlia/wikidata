@@ -1,6 +1,10 @@
 # This workflow will install Python dependencies, run tests and lint with a single version of Python
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
+# this file uses sections
+# - https://github.com/actions/setup-python#usage
+# - from https://github.com/ymyzk/tox-gh-actions#examples
+
 name: Python application
 
 on:
@@ -18,10 +22,20 @@ jobs:
         python-version: ['3.7', '3.8', '3.9', '3.10']
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Display Python version
-        run: python --version
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Display marker
+      run: echo "+++++++++++++++"
+    - name: Display Python version
+      run: python --version
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install tox tox-gh-actions
+    - name: Display 2nd marker
+      run: echo "~~~~~~~~~~~~~~"
+    - name: Test with tox
+      run: tox
