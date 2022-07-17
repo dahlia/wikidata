@@ -5,6 +5,7 @@
 import io
 import json
 import logging
+import sys
 from typing import (
     TYPE_CHECKING,
     Callable,
@@ -21,6 +22,7 @@ import urllib.parse
 import urllib.request
 import weakref
 
+from . import __version__
 from .cache import CacheKey, CachePolicy, NullCachePolicy
 from .entity import Entity, EntityId, EntityType
 
@@ -104,7 +106,8 @@ class Client:
                                           None] = None,
                  entity_type_guess: bool = True,
                  cache_policy: CachePolicy = NullCachePolicy(),
-                 repr_string: Optional[str] = None) -> None:
+                 repr_string: Optional[str] = None,
+                 user_agent: Optional[str] = None) -> None:
         self._using_default_opener = opener is None
         if self._using_default_opener:
             if urllib.request._opener is None:  # type: ignore
@@ -114,6 +117,13 @@ class Client:
                     pass
             opener = urllib.request._opener  # type: ignore
         assert isinstance(opener, urllib.request.OpenerDirector)
+        if not user_agent:
+            python_version = f'{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}'
+            user_agent = f'wikidata-based-bot/{__version__} (https://github.com/dahlia/wikidata) python/{python_version}'
+        # See also: https://meta.wikimedia.org/wiki/User-Agent_policy
+        opener.addheaders = {
+            'User-Agent': user_agent,
+        }
         if datavalue_decoder is None:
             from .datavalue import Decoder  # noqa: F811
             datavalue_decoder = Decoder()
