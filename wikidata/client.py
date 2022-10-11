@@ -54,7 +54,7 @@ class Client:
                               :attr:`~.entity.Entity.id` for less HTTP
                               requests.  :const:`True` by default.
     :type entity_type_guess: :class:`bool`
-    :param cache_poliy: A caching policy for API calls.  No cache
+    :param cache_policy: A caching policy for API calls.  No cache
                         (:class:`~wikidata.cache.NullCachePolicy`) by default.
     :type cache_policy: :class:`~wikidata.cache.CachePolicy`
 
