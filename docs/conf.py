@@ -362,8 +362,8 @@ intersphinx_mapping = {
 
 
 extlinks = {
-    'issue': ('https://github.com/dahlia/wikidata/issues/%s', '#'),
-    'pr': ('https://github.com/dahlia/wikidata/pull/%s', '#'),
-    'branch': ('https://github.com/dahlia/wikidata/compare/%s', ''),
-    'commit': ('https://github.com/dahlia/wikidata/commit/%s', '')
+    'issue': ('https://github.com/dahlia/wikidata/issues/%s', '#%s'),
+    'pr': ('https://github.com/dahlia/wikidata/pull/%s', '#%s'),
+    'branch': ('https://github.com/dahlia/wikidata/compare/%s', '%s'),
+    'commit': ('https://github.com/dahlia/wikidata/commit/%s', '%s')
 }
