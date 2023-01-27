@@ -1,5 +1,9 @@
 {
-  "restructuredtext.confPath": "${workspaceFolder}/docs",
-  "restructuredtext.linter.executablePath": "${workspaceFolder}/.tox/docs/bin/rstcheck",
-  "restructuredtext.sphinxBuildPath": "${workspaceFolder}/.tox/docs/bin/sphinx-build"
+  "files.eol": "\n",
+  "files.insertFinalNewline": false,
+  "files.trimFinalNewlines": true,
+  "esbonio.sphinx.buildDir": "${workspaceFolder}/docs/_build",
+  "esbonio.sphinx.confDir": "${workspaceFolder}/docs",
+  "esbonio.sphinx.srcDir": "${workspaceFolder}/docs",
+  "restructuredtext.linter.rstcheck.executablePath": "${workspaceFolder}/.tox/docs/bin/rstcheck"
 }
