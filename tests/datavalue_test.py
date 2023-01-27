@@ -8,7 +8,7 @@ from wikidata.commonsmedia import File
 from wikidata.datavalue import DatavalueError, Decoder
 from wikidata.entity import Entity, EntityId
 from wikidata.globecoordinate import GlobeCoordinate
-from wikidata.multilingual import MonolingualText
+from wikidata.multilingual import Locale, MonolingualText
 from wikidata.quantity import Quantity
 
 
@@ -145,7 +145,7 @@ def test_decoder_monolingualtext(fx_client: Client):
             'language': 'ko',
             'text': '윤동주',
         },
-    }) == MonolingualText('윤동주', 'ko')
+    }) == MonolingualText('윤동주', Locale('ko'))
 
 
 def test_decoder_commonsMedia__string(fx_client: Client):

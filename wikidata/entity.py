@@ -172,7 +172,7 @@ class Entity(collections.abc.Mapping, collections.abc.Hashable):
     def __init__(self, id: EntityId, client: 'Client') -> None:
         self.id = id
         self.client = client
-        self.data = None  # type: Optional[Mapping[str, object]]
+        self.data: Optional[Mapping[str, object]] = None
         self.state = EntityState.not_loaded  # type: EntityState
 
     def __eq__(self, other) -> bool:

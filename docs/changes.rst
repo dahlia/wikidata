@@ -6,11 +6,15 @@ Version 0.8.0
 
 To be released.
 
+- Python 3.4---3.7 are no more supported.  The minimum supported Python version
+  is Python 3.8.  Instead, now it's tested with Python 3.8---3.11.
 - :class:`~wikidata.entity.Entity` and :class:`~wikidata.client.Client` became
   possible to be serialized using :mod:`pickle`.  [:issue:`31`]
 - Fixed a typing bug that :attr:`Entity.label <wikidata.entity.Entity.label>`
   and :attr:`Entity.description <wikidata.entity.Entity.description>` properties
   were incorrectly typed.
+- :class:`wikidata.multilingual.MultilingualText`'s constructor became to take
+  only :class:`Locale` for parameter ``locale``.
 
 
 Version 0.7.0

@@ -3,7 +3,7 @@
 
 """
 import collections.abc
-from typing import Iterator, Mapping, NewType, Type, Union
+from typing import Iterator, Mapping, NewType, Type, Union, cast
 
 __all__ = 'Locale', 'MonolingualText', 'MultilingualText'
 
@@ -59,15 +59,25 @@ class MonolingualText(str):
     Locale-denoted text. It's almost equivalent to :class:`str` (and indeed
     subclasses :class:`str`) except that it has an extra attribute,
     :attr:`locale`, that denotes what language the text is written in.
+
+    .. versionchanged:: 0.8.0
+
+       The type hint of the constructor's ``locale`` parameter became
+       :class:`Locale`.
+
     """
 
     #: (:class:`Locale`) The code of :attr:`locale`.
-    locale = None  # type: Locale
+    #:
+    #: .. versionchanged:: 0.7.0
+    #:
+    #:    The type became :class:`Locale` (was :class:`babel.core.Locale`).
+    locale: Locale
 
     def __new__(cls: Type[str],
                 text: str,
-                locale: Union[Locale, str]) -> 'MonolingualText':
-        self = str.__new__(cls, text)  # type: ignore
+                locale: Locale) -> 'MonolingualText':
+        self = cast(MonolingualText, str.__new__(cls, text))
         self.locale = locale
         return self
 
