@@ -1,5 +1,5 @@
-"""This module provides the decoder interface for customizing how datavalues are
-decoded, and the default :class:`Decoder` implementation.
+"""This module provides the decoder interface for customizing how datavalues
+are decoded, and the default :class:`Decoder` implementation.
 
 Technically the interface is just a callable so that its implementation
 doesn't necessarily have to be an instance of :class:`Decoder` or its subclass,

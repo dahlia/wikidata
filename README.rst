@@ -9,9 +9,9 @@ Wikidata_ client library for Python
    :target: https://wikidata.readthedocs.io/
    :alt: Documentation Status
 
-.. image:: https://travis-ci.org/dahlia/wikidata.svg
-   :alt: Build Status
-   :target: https://travis-ci.org/dahlia/wikidata
+.. image:: https://github.com/dahlia/wikidata/actions/workflows/main.yaml/badge.svg?branch=main
+   :alt: GitHub Actions
+   :target: https://github.com/dahlia/wikidata/actions/workflows/main.yaml
 
 This package provides easy APIs to use Wikidata_ for Python.
 

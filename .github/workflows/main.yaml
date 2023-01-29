@@ -1,0 +1,42 @@
+name: main
+on: [push, pull_request]
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        python-version:
+        - "3.11"
+        - "3.10"
+        - "3.9"
+        - "3.8"
+        - pypy3.9
+        - pypy3.8
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    - run: |
+        python -m pip install -U pip
+        python -m pip install tox tox-gh-actions
+    - run: tox
+
+  check:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
+    steps:
+    - run: |
+        mkdir -p "$HOME/bin"
+        curl -L -o "$HOME/bin/checkmate" \
+          https://github.com/dahlia/checkmate/releases/download/0.4.0/checkmate-linux-x86_64
+        chmod +x "$HOME/bin/checkmate"
+    - run: |
+        "$HOME/bin/checkmate" \
+          --token "$GITHUB_TOKEN" \
+          --login "$GITHUB_REPOSITORY_OWNER" \
+          --repo "${GITHUB_REPOSITORY#*/}" \
+          --pr "$GITHUB_PULL_REQUEST_NUMBER"
