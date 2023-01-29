@@ -1,14 +1,12 @@
+:mod:`wikidata` --- Wikidata_ client library
+============================================
+
+.. _Wikidata: https://www.wikidata.org/
 
 .. automodule:: wikidata
 
    .. toctree::
-      :maxdepth: 2
+      :maxdepth: 1
+      :glob:
 
-      wikidata/cache
-      wikidata/client
-      wikidata/commonsmedia
-      wikidata/datavalue
-      wikidata/entity
-      wikidata/globecoordinate
-      wikidata/multilingual
-      wikidata/quantity
+      wikidata/*

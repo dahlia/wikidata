@@ -1,7 +1,3 @@
-""":mod:`wikidata.multilingual` --- Multilingual texts
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-"""
 import collections.abc
 from typing import Iterator, Mapping, NewType, Type, Union, cast
 

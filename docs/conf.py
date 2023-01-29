@@ -80,7 +80,7 @@ release = __version__
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'en'
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
@@ -101,6 +101,9 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 #
 # default_role = None
 
+primary_domain = 'py'
+highlight_language = 'python3'
+
 # If true, '()' will be appended to :func: etc. cross-reference text.
 #
 # add_function_parentheses = True
@@ -116,7 +119,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # show_authors = False
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+# pygments_style = ''
 
 # A list of ignored prefixes for module index sorting.
 # modindex_common_prefix = []
@@ -147,7 +150,7 @@ html_theme = 'furo'
 # The name for this set of Sphinx documents.
 # "<project> v<release> documentation" by default.
 #
-# html_title = 'Wikidata v1.0.0'
+html_title = f'Wikidata v{release}'
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #
@@ -351,6 +354,7 @@ texinfo_documents = [
 #
 # texinfo_no_detailmenu = False
 
+autosummary_generate = True
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {

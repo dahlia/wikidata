@@ -1,7 +1,3 @@
-""":mod:`wikidata.client` --- Client session
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-"""
 import io
 import json
 import logging

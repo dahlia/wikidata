@@ -1,9 +1,3 @@
-""":mod:`wikidata.cache` --- Caching policies
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. versionchanged:: 0.5.0
-
-"""
 import collections
 import hashlib
 import logging

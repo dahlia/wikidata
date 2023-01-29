@@ -1,7 +1,4 @@
-""":mod:`wikidata.datavalue` --- Interpreting datavalues
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-This module provides the decoder interface for customizing how datavalues are
+"""This module provides the decoder interface for customizing how datavalues are
 decoded, and the default :class:`Decoder` implementation.
 
 Technically the interface is just a callable so that its implementation
@@ -10,8 +7,6 @@ but only need to satify::
 
     typing.Callable[[wikidata.client.Client, str, typing.Mapping[str, object]],
                     object]
-
-.. versionadded:: 0.3.0
 
 """
 import collections.abc

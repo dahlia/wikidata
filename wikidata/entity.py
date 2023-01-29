@@ -1,7 +1,3 @@
-""":mod:`wikidata.entity` --- Wikidata entities
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-"""
 import collections.abc
 import enum
 import logging
