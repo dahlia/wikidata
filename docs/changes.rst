@@ -15,7 +15,7 @@ To be released.
   were incorrectly typed.
 - :class:`wikidata.multilingual.MultilingualText`'s constructor became to take
   only :class:`Locale` for parameter ``locale``.
-
+- Added date precision 7 in :class:`wikidata.datavalue.decoder` [:pr:`59`]
 
 Version 0.7.0
 -------------
