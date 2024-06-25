@@ -193,6 +193,8 @@ class Decoder:
             precision = value['precision']
         except KeyError:
             raise DatavalueError('precision field is missing', datavalue)
+        if precision == 7:
+            return int(time[1:3])
         if precision == 9:
             # The time only specifies the year.
             return int(time[1:5])
@@ -206,7 +208,7 @@ class Decoder:
             ).replace(tzinfo=datetime.timezone.utc)
         else:
             raise DatavalueError(
-                '{!r}: time precision other than 9, 11 or 14 is '
+                '{!r}: time precision other than 7, 9, 11 or 14 is '
                 'unsupported'.format(precision),
                 datavalue
             )
