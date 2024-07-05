@@ -211,7 +211,7 @@ class Decoder:
             ).replace(tzinfo=datetime.timezone.utc)
         else:
             raise DatavalueError(
-                '{!r}: time precision other than 7, 9, 11 or 14 is '
+                '{!r}: time precision other than 7, 9, 10, 11 or 14 is '
                 'unsupported'.format(precision),
                 datavalue
             )
