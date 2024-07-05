@@ -198,6 +198,9 @@ class Decoder:
         if precision == 9:
             # The time only specifies the year.
             return int(time[1:5])
+        if precision == 10:
+            # this time only specifies year and month (no day)
+            return (int(time[1:5]), int(time[6:8]))
         if precision == 11:
             return datetime.date(int(time[1:5]), int(time[6:8]),
                                  int(time[9:11]))
