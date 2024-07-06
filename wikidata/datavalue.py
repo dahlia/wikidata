@@ -11,7 +11,7 @@ but only need to satify::
 """
 import collections.abc
 import datetime
-from typing import TYPE_CHECKING, Any, Mapping, Union
+from typing import TYPE_CHECKING, Any, Mapping, Union, Tuple
 
 from .client import Client
 from .commonsmedia import File
@@ -147,6 +147,7 @@ class Decoder:
              client: Client,
              datavalue: Mapping[str, object]) -> Union[datetime.date,
                                                        datetime.datetime,
+                                                       Tuple[int, int],
                                                        int]:
         value = datavalue['value']
         if not isinstance(value, collections.abc.Mapping):
