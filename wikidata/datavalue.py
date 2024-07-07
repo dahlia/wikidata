@@ -11,7 +11,7 @@ but only need to satify::
 """
 import collections.abc
 import datetime
-from typing import TYPE_CHECKING, Any, Mapping, Union
+from typing import TYPE_CHECKING, Any, Mapping, Tuple, Union
 
 from .client import Client
 from .commonsmedia import File
@@ -147,6 +147,7 @@ class Decoder:
              client: Client,
              datavalue: Mapping[str, object]) -> Union[datetime.date,
                                                        datetime.datetime,
+                                                       Tuple[int, int],
                                                        int]:
         value = datavalue['value']
         if not isinstance(value, collections.abc.Mapping):
@@ -198,6 +199,9 @@ class Decoder:
         if precision == 9:
             # The time only specifies the year.
             return int(time[1:5])
+        if precision == 10:
+            # this time only specifies year and month (no day)
+            return (int(time[1:5]), int(time[6:8]))
         if precision == 11:
             return datetime.date(int(time[1:5]), int(time[6:8]),
                                  int(time[9:11]))
@@ -208,7 +212,7 @@ class Decoder:
             ).replace(tzinfo=datetime.timezone.utc)
         else:
             raise DatavalueError(
-                '{!r}: time precision other than 7, 9, 11 or 14 is '
+                '{!r}: time precision other than 7, 9, 10, 11 or 14 is '
                 'unsupported'.format(precision),
                 datavalue
             )

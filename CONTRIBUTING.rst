@@ -36,7 +36,7 @@ on all of them.
 
 The easiest to install ``tox`` is to use ``pip`` [#]_::
 
-    pip install tox tox-pip-version
+    pip install tox
 
 Once you've installed ``tox``, it's very simple to run the test suite on
 all Python versions this project aims to support::

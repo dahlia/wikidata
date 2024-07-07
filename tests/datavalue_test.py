@@ -130,11 +130,11 @@ def test_decoder__time(datatype: str, fx_client: Client):
         d(fx_client, datatype, other_value(precision=None))
         # precision field is missing
     for p in range(1, 15):
-        if p in (7, 9, 11, 14):
+        if p in (7, 9, 10, 11, 14):
             continue
         with raises(DatavalueError):
             d(fx_client, datatype, other_value(precision=p))
-            # precision (other than 7, 9, 11 or 14) is unsupported
+            # precision (other than 7, 9, 10, 11 or 14) is unsupported
 
 
 def test_decoder_monolingualtext(fx_client: Client):
