@@ -1,8 +1,8 @@
 Changelog
 =========
 
-Version 0.8.0
--------------
+Version 0.8.0 & 0.8.1
+---------------------
 
 Released on July 7, 2024.
 
