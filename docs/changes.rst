@@ -4,7 +4,7 @@ Changelog
 Version 0.8.0
 -------------
 
-To be released.
+Released on July 7, 2024.
 
 - Python 3.4--3.7 are no more supported.  The minimum supported Python version
   is Python 3.8.  Instead, now it's tested with Python 3.8--3.11.
@@ -15,7 +15,11 @@ To be released.
   were incorrectly typed.
 - :class:`wikidata.multilingual.MultilingualText`'s constructor became to take
   only :class:`Locale` for parameter ``locale``.
-- Added date precision 7 in :class:`wikidata.datavalue.decoder` [:pr:`59`]
+- Added date precision 7 in :class:`wikidata.datavalue.decoder`.
+  [:pr:`59` by Baptiste Bayche]
+- Added date precision 10 in :class:`wikidata.datavalue.decoder`.
+  [:pr:`60` by David Doukhan]
+
 
 Version 0.7.0
 -------------
