@@ -105,7 +105,8 @@ def test_decoder__time(datatype: str, fx_client: Client):
     # this is a quick and temporary fix before longer term support
     # of alternative calendar models (julian for instance, see issue #54)
     # this fix allows the system not to crash and let API user do a custom
-    # management when this dictionary is returned instead of datetime, tuples or int
+    # management when this dictionary is returned instead
+    # of datetime, tuples or int
     unsupported_cal = other_value(calendarmodel='unsupported calendar model')
     assert d(fx_client, datatype, unsupported_cal) == unsupported_cal
 
