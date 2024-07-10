@@ -100,11 +100,16 @@ def test_decoder__time(datatype: str, fx_client: Client):
     with raises(DatavalueError):
         d(fx_client, datatype, other_value(time=None))
         # no time field
-    with raises(DatavalueError):
-        d(
-            fx_client, datatype,
-            other_value(calendarmodel='unspported calendar model')
-        )
+    # if the calendar model is unsupported, it should return
+    # the raw data value dictionnary
+    # this is a quick and temporary fix before longer term support
+    # of alternative calendar models (julian for instance, see issue #54)
+    # this fix allows the system not to crash and let API user do a custom
+    # management when this dictionary is returned instead
+    # of datetime, tuples or int
+    unsupported_cal = other_value(calendarmodel='unsupported calendar model')
+    assert d(fx_client, datatype, unsupported_cal) == unsupported_cal
+
     with raises(DatavalueError):
         d(fx_client, datatype, other_value(time='-2017-02-22T02:53:12Z'))
         # only AD (CE) time is supported

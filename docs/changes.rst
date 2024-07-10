@@ -7,6 +7,14 @@ Version 0.9.0
 To be released.
 
 
+Version 0.8.2
+-------------
+
+Released on July 10, 2024.
+
+- Fixing issues [:issue:`35`] and [:issue:`54`]. Returns raw time dictionaries instead of crashing when encountering unsupported calendar models   [:pr:`61` by David Doukhan].
+
+
 Version 0.8.0 & 0.8.1
 ---------------------
 
