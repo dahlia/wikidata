@@ -32,15 +32,3 @@ m'South Korean singer and actress'
 'https://upload.wikimedia.org/wikipedia/commons/6/60/KBS_%22The_Producers%22_press_conference%2C_11_May_2015_10.jpg'
 
 .. _Wikidata: https://www.wikidata.org/
-
-Sample usage with cache ``pip install cachelib``:
-
->>> from wikidata.client import Client
->>> from cachelib.file import FileSystemCache
->>> 
->>> wikidata_cache = wikidata.cache.ProxyCachePolicy(
->>>    timeout=3600*24*30, # One month cache in seconds
->>>    FileSystemCache(
->>>    "/tmp/wikidata"
->>> )
->>> client = Client(cache_policy=wikidata_cache)
