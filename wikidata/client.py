@@ -100,8 +100,9 @@ class Client:
                                           None] = None,
                  entity_type_guess: bool = True,
                  cache_policy: CachePolicy = NullCachePolicy(),
-                 repr_string: Optional[str] = None,
-                 access_token: Optional[str] = None) -> None:
+                 repr_string: Optional[str] = None
+                 user_agent: Optional[str] = 'WikidataClientPython (https://github.com/dahlia/wikidata; hong@minhee.org)'
+        ) -> None:
         self._using_default_opener = opener is None
         if self._using_default_opener:
             if urllib.request._opener is None:  # type: ignore
@@ -123,7 +124,7 @@ class Client:
         self.identity_map = cast(MutableMapping[EntityId, Entity],
                                  weakref.WeakValueDictionary())
         self.repr_string = repr_string
-        self.access_token = access_token
+        self.user_agent = user_agent
 
     def get(self, entity_id: EntityId, load: bool = False) -> Entity:
         """Get a Wikidata entity by its :class:`~.entity.EntityId`.
@@ -200,12 +201,12 @@ class Client:
         result = self.cache_policy.get(CacheKey(url))
         if result is None:
             logger.debug('%r: no cache; make a request...', url)
-            req = urllib.request.Request(url)
-            req.add_header('Content-Type', 'application/json')
-            if self.access_token:
-                req.add_header('Authorization', f'Bearer {self.access_token}')
+            self.opener.addheaders = [(
+                'User-Agent', 
+                self.user_agent
+            )]
             try:
-                response = self.opener.open(req)
+                response = self.opener.open(url)
             except urllib.error.HTTPError as e:
                 logger.debug('HTTP error code: %s', e.code, exc_info=True)
                 if e.code == 400 and b'Invalid ID' in e.read():
