@@ -100,7 +100,7 @@ class Client:
                                           None] = None,
                  entity_type_guess: bool = True,
                  cache_policy: CachePolicy = NullCachePolicy(),
-                 repr_string: Optional[str] = None
+                 repr_string: Optional[str] = None,
                  user_agent: Optional[str] = 'WikidataClientPython (https://github.com/dahlia/wikidata; hong@minhee.org)'
         ) -> None:
         self._using_default_opener = opener is None
