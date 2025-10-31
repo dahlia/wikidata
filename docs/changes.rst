@@ -4,7 +4,7 @@ Changelog
 Version 0.9.0
 -------------
 
-To be released.
+Released on October 31, 2025.
 
 - Extended Python version support to 3.8--3.14.
 - Added ``user_agent`` parameter to :class:`~wikidata.client.Client` constructor.
