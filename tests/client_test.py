@@ -1,13 +1,14 @@
 import json
 import pickle
-from typing import TYPE_CHECKING, Optional
 import urllib.request
+from typing import Optional, TYPE_CHECKING
 
-from .mock import FixtureOpener
 from wikidata.cache import CacheKey, CachePolicy, CacheValue
 from wikidata.client import Client
 from wikidata.entity import Entity, EntityId, EntityState, EntityType
 from wikidata.multilingual import Locale
+
+from .mock import FixtureOpener
 
 if TYPE_CHECKING:
     from typing import Dict, Union  # noqa: F401

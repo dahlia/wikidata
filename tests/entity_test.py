@@ -1,14 +1,15 @@
 import json
 import pickle
-from typing import Iterable
 import urllib.request
+from typing import Iterable
 
 from pytest import raises
 
-from .mock import ENTITY_FIXTURES_PATH
 from wikidata.client import Client
 from wikidata.entity import Entity, EntityId, EntityType
 from wikidata.multilingual import Locale, MultilingualText
+
+from .mock import ENTITY_FIXTURES_PATH
 
 
 def test_entity_equality(fx_client_opener: urllib.request.OpenerDirector,

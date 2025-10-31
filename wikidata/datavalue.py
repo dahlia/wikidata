@@ -11,7 +11,7 @@ but only need to satify::
 """
 import collections.abc
 import datetime
-from typing import TYPE_CHECKING, Any, Mapping, Tuple, Union
+from typing import Any, Mapping, TYPE_CHECKING, Tuple, Union
 
 from .client import Client
 from .commonsmedia import File

@@ -3,12 +3,12 @@ import enum
 import logging
 import pprint
 from typing import (
-    TYPE_CHECKING,
     Iterator,
     Mapping,
     NewType,
     Optional,
     Sequence,
+    TYPE_CHECKING,
     Tuple,
     Type,
     cast,

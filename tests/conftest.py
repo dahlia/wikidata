@@ -1,12 +1,13 @@
-from typing import AbstractSet, FrozenSet, Optional, Sequence, Set, Union, cast
 import urllib.request
+from typing import AbstractSet, FrozenSet, Optional, Sequence, Set, Union, cast
 
 from pytest import fixture
 
-from .mock import FixtureOpener
-from wikidata.client import WIKIDATA_BASE_URL, Client
+from wikidata.client import Client, WIKIDATA_BASE_URL
 from wikidata.commonsmedia import File
 from wikidata.entity import Entity, EntityId
+
+from .mock import FixtureOpener
 
 
 def pytest_assertrepr_compare(op: str, left, right) -> Optional[Sequence[str]]:

@@ -1,6 +1,6 @@
 import collections.abc
-from typing import Mapping, Optional, Tuple, cast
 import urllib.parse
+from typing import Mapping, Optional, Tuple, cast
 
 from .client import Client
 

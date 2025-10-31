@@ -1,21 +1,21 @@
 import io
 import json
 import logging
+import urllib.error
+import urllib.parse
+import urllib.request
+import weakref
 from typing import (
-    TYPE_CHECKING,
     Callable,
     Mapping,
     MutableMapping,
     Optional,
     Sequence,
+    TYPE_CHECKING,
     Tuple,
     Union,
     cast,
 )
-import urllib.error
-import urllib.parse
-import urllib.request
-import weakref
 
 from .cache import CacheKey, CachePolicy, NullCachePolicy
 from .entity import Entity, EntityId, EntityType
@@ -101,8 +101,10 @@ class Client:
                  entity_type_guess: bool = True,
                  cache_policy: CachePolicy = NullCachePolicy(),
                  repr_string: Optional[str] = None,
-                 user_agent: Optional[str] = 'WikidataClientPython (https://github.com/dahlia/wikidata; hong@minhee.org)'
-        ) -> None:
+                 user_agent: str = (
+                      'WikidataClientPython '
+                      '(https://github.com/dahlia/wikidata; hong@minhee.org)'
+                  )) -> None:
         self._using_default_opener = opener is None
         if self._using_default_opener:
             if urllib.request._opener is None:  # type: ignore
@@ -202,7 +204,7 @@ class Client:
         if result is None:
             logger.debug('%r: no cache; make a request...', url)
             self.opener.addheaders = [(
-                'User-Agent', 
+                'User-Agent',
                 self.user_agent
             )]
             try:

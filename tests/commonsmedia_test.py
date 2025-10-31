@@ -4,8 +4,9 @@ import pathlib
 
 from pytest import fixture
 
-from .mock import MEDIA_FIXTURES_PATH
 from wikidata.commonsmedia import File
+
+from .mock import MEDIA_FIXTURES_PATH
 
 
 def test_file_page_url(fx_file: File):

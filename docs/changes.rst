@@ -9,6 +9,12 @@ To be released.
 - Added ``user_agent`` parameter to :class:`~wikidata.client.Client` constructor.
   Now API requests include a ``User-Agent`` header to comply with Wikidata API
   authentication requirements.  [:issue:`64`]
+- Migrated build configuration from ``setup.py``/``setup.cfg`` to ``pyproject.toml``
+  following modern Python packaging standards (:pep:`518`, :pep:`621`).
+- Updated mypy configuration to use Python 3.9 as the target version for type checking.
+- Fixed typing annotation for ``user_agent`` parameter in :class:`~wikidata.client.Client`
+  constructor to be non-optional.
+- Improved code style and import organization throughout the codebase.
 
 
 Version 0.8.0 & 0.8.1

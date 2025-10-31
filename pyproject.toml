@@ -1,0 +1,71 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Wikidata"
+dynamic = ["version"]
+description = "Wikidata client library"
+readme = "README.rst"
+license = {text = "GPLv3 or later"}
+authors = [
+    {name = "Hong Minhee", email = "hong.minhee@gmail.com"}
+]
+keywords = ["wikidata", "ontology"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Database",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+requires-python = ">=3.8.0"
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/dahlia/wikidata"
+Documentation = "https://wikidata.readthedocs.io/"
+
+[project.optional-dependencies]
+tests = [
+    "flake8 >= 6.0.0",
+    "flake8-import-order-spoqa",
+    "pytest ~= 7.2.1",
+    "mypy >= 0.991"
+]
+docs = [
+    "furo",
+    "rstcheck",
+    "Sphinx ~= 6.1.3"
+]
+
+[tool.setuptools]
+package-data = {"wikidata" = ["py.typed"]}
+
+[tool.setuptools.packages.find]
+exclude = ["docs", "tests"]
+
+[tool.setuptools.dynamic]
+version = {attr = "wikidata.__version__"}
+
+[tool.pytest]
+addopts = "--ff --doctest-glob=*.rst --doctest-modules"
+testpaths = ["tests", "wikidata", "README.rst"]
+doctest_optionflags = ["NORMALIZE_WHITESPACE", "IGNORE_EXCEPTION_DETAIL", "ELLIPSIS"]
+
+[tool.flake8]
+exclude = ".tox,build,dist,docs,typeshed"
+import-order-style = "spoqa"
+application-import-names = "wikidata,tests"
