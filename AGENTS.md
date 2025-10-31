@@ -1,12 +1,13 @@
 # Wikidata Python Client Library
 
 ## Build/Test Commands
+- `uv sync`: Sync dependencies and create virtual environment
 - `tox`: Run tests across all Python versions (3.8+, PyPy)
 - `tox -e py311`: Run tests on specific Python version
-- `pytest tests/client_test.py::test_client_get -v`: Run single test
-- `mypy -p wikidata`: Type check main package
-- `flake8`: Lint code style
-- `sphinx-build docs/ docs/_build/html`: Build documentation
+- `uv run pytest tests/client_test.py::test_client_get -v`: Run single test
+- `uv run mypy -p wikidata`: Type check main package
+- `uv run flake8`: Lint code style
+- `uv run sphinx-build docs/ docs/_build/html`: Build documentation
 
 ## Architecture
 Python client library for Wikidata API. Core modules:

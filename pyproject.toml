@@ -43,7 +43,7 @@ Documentation = "https://wikidata.readthedocs.io/"
 
 [project.optional-dependencies]
 tests = [
-    "flake8 >= 6.0.0",
+    "flake8 >= 6.0.0 ; python_version >= '3.9.1'",
     "flake8-import-order-spoqa",
     "pytest ~= 8.0",
     "mypy >= 0.991"
@@ -51,7 +51,8 @@ tests = [
 docs = [
     "furo",
     "rstcheck",
-    "Sphinx ~= 6.1.3"
+    "Sphinx ~= 8.2.3 ; python_version >= '3.11'",
+    "Sphinx ~= 6.1.3 ; python_version < '3.11'"
 ]
 
 [tool.setuptools]
