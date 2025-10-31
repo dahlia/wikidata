@@ -6,6 +6,10 @@ Version 0.9.0
 
 To be released.
 
+- Added ``user_agent`` parameter to :class:`~wikidata.client.Client` constructor.
+  Now API requests include a ``User-Agent`` header to comply with Wikidata API
+  authentication requirements.  [:issue:`64`]
+
 
 Version 0.8.0 & 0.8.1
 ---------------------
