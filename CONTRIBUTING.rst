@@ -28,31 +28,40 @@ the *main* branch.
 How to run tests
 ----------------
 
-As this project supports various Python interpreters (CPython and PyPy) and
-versions, to ensure it works well with them, we use tox_.  You don't need to
-create a virtual environment by yourself.  ``tox`` automatically creates
-virtual environments for various Python versions and run the same test suite
-on all of them.
+This project uses `uv`_ for dependency management and virtual environment
+handling. We support various Python interpreters (CPython and PyPy) and
+versions, and use tox_ for running tests across multiple environments.
 
-The easiest to install ``tox`` is to use ``pip`` [#]_::
+First, install `uv` (see `uv's installation guide`_). Then, sync dependencies::
 
-    pip install tox
+    uv sync --extra tests
 
-Once you've installed ``tox``, it's very simple to run the test suite on
-all Python versions this project aims to support::
+To run the test suite on all supported Python versions::
 
-    tox
+    uv run tox
 
-Note that you need to install Python interpreters besides ``tox``.
-If you don't want to install all of them use ``--skip-missing-interpreters``
-option::
+If you don't want to install all Python interpreters, use
+``--skip-missing-interpreters`` option::
 
-    tox --skip-missing-interpreters
+    uv run tox --skip-missing-interpreters
 
 To run tests on multiple interpreters at a time, use ``--parallel`` option::
 
-    tox --parallel
+    uv run tox --parallel
 
-.. [#] See also the `tox's official docs`__.
+To run a single test::
+
+    uv run pytest tests/client_test.py::test_client_get -v
+
+For type checking::
+
+    uv run mypy -p wikidata
+
+For linting::
+
+    uv run flake8
+
+.. _uv: https://github.com/astral-sh/uv
+.. _uv's installation guide: https://docs.astral.sh/uv/getting-started/installation/
 .. _tox: https://tox.readthedocs.io/
 __ https://tox.readthedocs.io/en/latest/install.html
