@@ -23,6 +23,9 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
@@ -42,7 +45,7 @@ Documentation = "https://wikidata.readthedocs.io/"
 tests = [
     "flake8 >= 6.0.0",
     "flake8-import-order-spoqa",
-    "pytest ~= 7.2.1",
+    "pytest ~= 8.0",
     "mypy >= 0.991"
 ]
 docs = [

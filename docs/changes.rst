@@ -6,6 +6,7 @@ Version 0.9.0
 
 To be released.
 
+- Extended Python version support to 3.8--3.14.
 - Added ``user_agent`` parameter to :class:`~wikidata.client.Client` constructor.
   Now API requests include a ``User-Agent`` header to comply with Wikidata API
   authentication requirements.  [:issue:`64`]
