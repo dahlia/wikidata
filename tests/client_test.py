@@ -2,11 +2,13 @@ import json
 import pickle
 import urllib.request
 from typing import Optional, TYPE_CHECKING
+from unittest.mock import patch
 
 from wikidata.cache import CacheKey, CachePolicy, CacheValue
 from wikidata.client import Client
 from wikidata.entity import Entity, EntityId, EntityState, EntityType
 from wikidata.multilingual import Locale
+from wikidata.search import SearchResult
 
 from .mock import FixtureOpener
 
@@ -57,6 +59,69 @@ def test_client_request(fx_client: Client):
     assert entity['type'] == 'item'
     assert entity['labels']['en'] == {'language': 'en', 'value': 'The Beatles'}
 
+
+@patch('wikidata.client._search')
+def test_client_search(mock_search):
+    # Test case 1: Multiple results with different similarity scores
+    mock_results = [
+        SearchResult(
+            entity_id=EntityId('Q790'),
+            name='Haiti',
+            similarity_score=100.0,
+            description='Country in the Caribbean'
+        ),
+        SearchResult(
+            entity_id=EntityId('Q33281'),
+            name='Haitian Creole',
+            similarity_score=75.0,
+            description='Language spoken in Haiti'
+        ),
+    ]
+    mock_search.return_value = mock_results
+    
+    client = Client()
+    results = client.search('Haiti')
+    
+    assert len(results) == 2
+    assert results[0].entity_id == EntityId('Q790')
+    assert results[0].name == 'Haiti'
+    assert results[0].similarity_score == 100.0
+    assert results[1].entity_id == EntityId('Q33281')
+    assert results[1].similarity_score == 75.0
+    mock_search.assert_called_once()
+    
+    # Test case 2: Empty results
+    mock_search.reset_mock()
+    mock_search.return_value = []
+    results_empty = client.search('NonexistentXYZ')
+    assert len(results_empty) == 0
+    
+    # Test case 3: Single result
+    mock_search.reset_mock()
+    single_result = [
+        SearchResult(
+            entity_id=EntityId('Q42'),
+            name='Answer',
+            similarity_score=85.5,
+            description='The answer'
+        ),
+    ]
+    mock_search.return_value = single_result
+    results_single = client.search('Answer')
+    assert len(results_single) == 1
+    assert results_single[0].entity_id == EntityId('Q42')
+    assert results_single[0].similarity_score == 85.5
+    
+    # Test case 4: With parameters
+    mock_search.reset_mock()
+    results_with_params = client.search(
+        'test',
+        limit=5,
+        language='en',
+        entity_type='person',
+        likeness_threshold=0.8
+    )
+    mock_search.assert_called_once()
 
 class MockCachePolicy(CachePolicy):
 
