@@ -6,6 +6,10 @@ Version 0.10.0
 
 To be released.
 
+- :class:`~wikidata.multilingual.MultilingualText` now uses the ``mul``
+  default value as a fallback when converted to :class:`str` and no English
+  value is available.  [:issue:`70`, :pr:`71`]
+
 
 Version 0.9.0
 -------------

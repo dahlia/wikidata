@@ -40,9 +40,12 @@ class MultilingualText(collections.abc.Mapping):
         except KeyError:
             value = ''
             for lang, value in self.texts.items():
-                if lang.startswith('en_'):
+                if lang.startswith(('en_', 'en-')):
                     return value
-            return value
+            try:
+                return self.texts[Locale('mul')]
+            except KeyError:
+                return value
 
     def __repr__(self) -> str:
         if self:
