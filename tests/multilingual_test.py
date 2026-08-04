@@ -38,6 +38,44 @@ def test_multilingual_text_str(fx_multilingual_text: MultilingualText):
     assert str(MultilingualText({})) == ''
 
 
+def test_multilingual_text_str_prefers_english_over_mul():
+    assert str(MultilingualText({
+        'en': 'English',
+        'mul': 'Default',
+    })) == 'English'
+
+
+def test_multilingual_text_str_prefers_english_variant_over_mul():
+    assert str(MultilingualText({
+        'mul': 'Default',
+        'en-gb': 'British English',
+        'ckb': 'سکیم',
+    })) == 'British English'
+    assert str(MultilingualText({
+        'mul': 'Default',
+        'en_US': 'American English',
+        'ckb': 'سکیم',
+    })) == 'American English'
+
+
+def test_multilingual_text_str_falls_back_to_mul():
+    assert str(MultilingualText({
+        'mul': 'Scheme',
+        'ckb': 'سکیم',
+    })) == 'Scheme'
+    assert str(MultilingualText({
+        'ckb': 'سکیم',
+        'mul': 'Scheme',
+    })) == 'Scheme'
+
+
+def test_multilingual_text_str_falls_back_to_last_value():
+    assert str(MultilingualText({
+        'ko': '윤동주',
+        'ja': '尹東柱',
+    })) == '尹東柱'
+
+
 def test_multilingual_text_repr(fx_multilingual_text: MultilingualText):
     assert repr(fx_multilingual_text) == "m'Yun Dong-ju'"
     assert repr(MultilingualText({})) == \
