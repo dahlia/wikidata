@@ -147,6 +147,7 @@ class Decoder:
              client: Client,
              datavalue: Mapping[str, object]) -> Union[datetime.date,
                                                        datetime.datetime,
+                                                       Mapping[str, object],
                                                        Tuple[int, int],
                                                        int]:
         value = datavalue['value']
@@ -160,8 +161,7 @@ class Decoder:
         except KeyError:
             raise DatavalueError('missing "calendarmodel" field', datavalue)
         if cal != 'http://www.wikidata.org/entity/Q1985727':
-            raise DatavalueError('{!r} is unsupported calendarmodel for time '
-                                 'datavalue'.format(cal), datavalue)
+            return datavalue
         try:
             time = value['time']
         except KeyError:
