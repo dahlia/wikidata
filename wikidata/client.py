@@ -19,6 +19,7 @@ from typing import (
 
 from .cache import CacheKey, CachePolicy, NullCachePolicy
 from .entity import Entity, EntityId, EntityType
+from .search import SearchResult, _search
 
 if TYPE_CHECKING:
     from .datavalue import Decoder  # noqa: F401
@@ -223,6 +224,54 @@ class Client:
         else:
             logger.debug('%r: cache hit', url)
         return result  # type: ignore
+
+    def search(self,
+               query: str,
+               limit: int = 10,
+               language: Optional[str] = None,
+               entity_type: Optional[str] = None,
+               likeness_threshold: float = 1.0,
+               verbose: bool = False) -> 'Sequence[SearchResult]':
+        """Search Wikidata for entities by name or search term.
+        
+        This method performs a full-text search on Wikidata and returns a list of 
+        matching entities with their IDs and similarity scores. Results are sorted by
+        similarity score in descending order.
+        
+        The search is performed using this Client's HTTP opener and base URL.
+        
+        :param query: The search term (entity name or part of it)
+        :type query: :class:`str`
+        :param limit: Maximum number of results to return (default: 10)
+        :type limit: :class:`int`
+        :param language: Optional language code (e.g., 'en', 'fr', 'es') to search using
+                        labels/descriptions in that language (default: None, uses English)
+        :type language: :class:`str`
+        :param entity_type: Optional filter for entity type. Can be 'person', 'place', 
+                           'organization', 'work', etc. Filters results based on description 
+                           content (default: None)
+        :type entity_type: :class:`str`
+        :param likeness_threshold: Minimum similarity score threshold (0-1) for results to 
+                                  include. For example, 0.6 means only return results with 
+                                  60% or higher similarity (default: 1.0, returns only exact matches)
+        :type likeness_threshold: :class:`float`
+        :param verbose: If True, pretty print the search results to stdout (default: False)
+        :type verbose: :class:`bool`
+        :return: A list of SearchResult objects sorted by similarity score (highest first),
+                filtered by likeness_threshold if provided
+        :rtype: :class:`Sequence`\\ [:class:`SearchResult`]
+        :raises urllib.error.URLError: If the HTTP request fails
+        
+        """
+        return _search(
+            query=query,
+            limit=limit,
+            client=self,
+            language=language,
+            entity_type=entity_type,
+            likeness_threshold=likeness_threshold,
+            verbose=verbose
+        )
 
     def __reduce__(self) -> Tuple[Callable[..., 'Client'], Tuple[object, ...]]:
         return type(self), (
